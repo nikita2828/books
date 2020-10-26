@@ -1,48 +1,49 @@
-.container{
+/* stylelint-disable */
+body {
+  background-color: rgb(106, 96, 80);
+}
+.container {
   width: 100%;
   margin: 0;
   padding: 0;
 }
-.container_80{
-  width: 80%;
+.container_80 {
+  width: 60%;
   margin: 0 auto;
 }
-.nav{
+.nav {
   width: 100%;
   height: 100px;
-  background: linear-gradient(rgb(153,142,126), rgb(110,98,78));
+  background: linear-gradient(rgb(153, 142, 126), rgb(110, 98, 78));
   margin: 0 0 10px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
 }
-.logo{
+.logo {
   margin: 0;
   padding: 0;
-  width: 50px;
-  position: absolute;
-  left: 170px;
-  top: 25px;
+  width: 20%;
 }
-.logo_item{
+.logo_item {
   margin: 0;
   padding: 0;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: "Times New Roman", Times, serif;
   font-style: italic;
-  font-size: 25px;
+  font-size: 30px;
 }
-.nav_item{
-  width: 70%;
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.nav_item {
+  width: 80%;
 }
-.search{
+.search {
   width: 100%;
   height: 30px;
   border: none;
   outline: none;
   padding-left: 15px;
 }
-.navigation{
+.navigation {
   background-color: rgb(165, 42, 42);
   height: 30px;
   display: flex;
@@ -50,37 +51,52 @@
   justify-content: flex-start;
   align-items: center;
 }
-.navigation_item{
+.navigation_item {
   text-decoration: none;
   color: rgb(255, 255, 255);
   font-weight: 600;
   padding: 0 5px 0 5px;
 }
 
-.container_books{
+.container_books {
   display: flex;
   flex-direction: row;
+  background-color: #ffffff;
 }
-.aside{
-  background-color: rgb(191,184,175);
+.aside {
+  background-color: rgb(191, 184, 175);
+  width: 20%;
 }
-.aside_item{
-  color: rgb(99,99,99);
+.aside_item {
+  color: rgb(99, 99, 99);
   cursor: pointer;
-  padding: 0px 0px 20px 5px;
+  padding: 5px 10px;
   margin: 0;
 }
-.section{
+.section {
   width: 80%;
 }
-.section_img{
+.section_img {
   float: left;
 }
-.section_item{
+.section_item {
   padding: 0 0 3px 5px;
   margin: 0;
-  font-size: 16px ;
+  font-size: 16px;
 }
-.section_line{
+.section_line {
   width: 100%;
+}
+
+.footer {
+  width: 100%;
+  margin-top: 5px;
+  background: rgb(255, 255, 255);
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.footer_item {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
