@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>webpack starterkit</title>
+    <title>books</title>
   </head>
   <body>
     <div class="container">
@@ -15,12 +15,16 @@
           <div class="nav_item">
             <input class="search" type="search" placeholder="ПОИСК" />
             <div class="navigation">
-              <a class="navigation_item" href="#">Главная</a>
-              <a class="navigation_item" href="#">Регистрация</a>
-              <a class="navigation_item" href="#">Отзывы</a>
-              <a class="navigation_item" href="#">Контакты</a>
+              <div class="navigation_container_items">
+                <a class="navigation_item" href="#">Главная</a>
+                <a class="navigation_item" href="#">Регистрация</a>
+                <a class="navigation_item" href="#">Отзывы</a>
+                <a class="navigation_item" href="#">Контакты</a>
+              </div>
+              <button class="section_btn">Добавить книгу</button>
             </div>
           </div>
+          
         </nav>
         <div class="container_books">
           <aside class="aside">
@@ -37,6 +41,10 @@
           </aside>
           <section class="section">
             <div class="section_for_one_book">
+              <div class="change_delete">
+                <button class="section_btn change">Изменить</button>
+                <button class="section_btn delete">Удалить</button>
+              </div>
               <img
                 class="section_img"
                 src="https://webbooks.com.ua/wp-content/uploads/2015/11/jsrucovodstvo.png"
@@ -47,7 +55,6 @@
               </p>
               <p class="section_item"><b>Автор:</b> Флэнаган Дэвид</p>
               <p class="section_item"><b>Страниц:</b> 1080</p>
-              <p class="section_item"><b>Формат:</b> Смешанный</p>
               <p class="section_item"><b>Размер:</b> 12 мб</p>
               <p class="section_item"><b>Качество:</b> Отличное</p>
               <p class="section_item"><b>Язык:</b> Русский</p>
@@ -64,6 +71,10 @@
               <hr class="section_line" />
             </div>
             <div class="section_for_one_book">
+              <div class="change_delete">
+                <button class="section_btn change">Изменить</button>
+                <button class="section_btn delete">Удалить</button>
+              </div>
               <img
                 class="section_img"
                 src="https://webbooks.com.ua/wp-content/uploads/2015/11/jsrucovodstvo.png"
@@ -74,7 +85,6 @@
               </p>
               <p class="section_item"><b>Автор:</b> Флэнаган Дэвид</p>
               <p class="section_item"><b>Страниц:</b> 1080</p>
-              <p class="section_item"><b>Формат:</b> Смешанный</p>
               <p class="section_item"><b>Размер:</b> 12 мб</p>
               <p class="section_item"><b>Качество:</b> Отличное</p>
               <p class="section_item"><b>Язык:</b> Русский</p>
@@ -91,6 +101,10 @@
               <hr class="section_line" />
             </div>
             <div class="section_for_one_book">
+              <div class="change_delete">
+                <button class="section_btn change">Изменить</button>
+                <button class="section_btn delete">Удалить</button>
+              </div>
               <img
                 class="section_img"
                 src="https://webbooks.com.ua/wp-content/uploads/2015/11/jsrucovodstvo.png"
@@ -101,7 +115,6 @@
               </p>
               <p class="section_item"><b>Автор:</b> Флэнаган Дэвид</p>
               <p class="section_item"><b>Страниц:</b> 1080</p>
-              <p class="section_item"><b>Формат:</b> Смешанный</p>
               <p class="section_item"><b>Размер:</b> 12 мб</p>
               <p class="section_item"><b>Качество:</b> Отличное</p>
               <p class="section_item"><b>Язык:</b> Русский</p>
@@ -116,11 +129,26 @@
                 интерфейсам, предоставляемым веб-броузерами.
               </p>
               <hr class="section_line" />
-              <footer class="footer">
-                <p class="footer_item">© 2006 - 2020 KodGes.RU</p>
-              </footer>
             </div>
           </section>
+        </div>
+      </div>
+      <div class="modal_window">
+        <h1>Введите информацию про книгу</h1>
+        <hr>
+        <div class="modal_window_item">
+        <label for="name">Введите имя<br><input placeholder="Введите имя" type="text" id="name"></label>
+        <label for="author">Введите автора<br><input placeholder="Введите автора" type="text" id="author"></label>
+        <label for="pages">Введите количество страниц<br><input placeholder="Введите количество страниц" type="number" id="pages"></label>
+        <label for="size">Введите размер файла<br><input placeholder="Введите размер фаила" type="text" id="size"></label>
+        <label for="quality">Введите качество<br><input placeholder="Введите качество" type="text" id="quality"></label>
+        <label for="language">Введите язык<br><input placeholder="Введите язык" type="text" id="language"></label>
+        <label for="year">Введите год<br><input placeholder="Введите год" type="number" id="year"></label>
+        </div>
+        <textarea name="modal_window_description" id="modal_window_description" ></textarea>
+        <div class="modal_window_btn">
+          <button class="section_btn">Создать</button>
+          <button class="section_btn">Отмена</button>
         </div>
       </div>
     </div>
