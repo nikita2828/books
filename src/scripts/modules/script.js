@@ -16,11 +16,25 @@ let modalWindowImg = document.querySelector("#img");
 let modalWindowDescription = document.querySelector("#modal_window_description");
 let createBtn = document.querySelector(".create_btn");
 let editBtn = document.querySelector(".edit_btn");
+let modalWindowItems = document.querySelectorAll(".modal_window_items");
+let listOfFieldsCreateBook = [
+    modalWindowName,
+    modalWindowAuthor,
+    modalWindowPages,
+    modalWindowSize,
+    modalWindowQuality,
+    modalWindowLanguage,
+    modalWindowYear,
+    modalWindowImg,
+    modalWindowDescription
+];
 
 let bookId = null;
 
 addBookBtn.addEventListener("click", () => {
 modalWindow.style.display = "block";
+createBtn.style.display = "block";
+editBtn.style.display = "none";
 });
 
 cancelBtn.addEventListener("click", () => closeModal());
@@ -33,6 +47,10 @@ window.addEventListener("click", (e) => {
 
 const closeModal = () => {
     modalWindow.style.display = "none";
+    modalWindowItems.forEach((item) => {
+        item.value = "" ;
+        item.style.outline = "";
+    });
 };
 
 //GET REQUEST
@@ -79,28 +97,29 @@ const closeModal = () => {
     getBooks();
 
 //POST REQUEST
-    createBtn.addEventListener("click", () => {
-        let post = {
-            imgNode: modalWindowImg.value,
-            nameNode: modalWindowName.value,
-            authotNode: modalWindowAuthor.value,
-            pagesNode: +modalWindowPages.value,
-            sizeNode: modalWindowSize.value,
-            qualityNode: modalWindowQuality.value,
-            languageNode: modalWindowLanguage.value,
-            yearNode: +modalWindowYear.value,
-            descriptionNode: modalWindowDescription.value
-        };
-        fetch(myUrl, {
-            method: 'POST',
-            body: JSON.stringify(post),
-            headers: {
-                        'Content-Type': 'application/json',
-                     }
-        })
-        .then(closeModal)
-        .then(getBooks);
-    });
+function postBook(){
+    let post = {
+        imgNode: modalWindowImg.value,
+        nameNode: modalWindowName.value,
+        authorNode: modalWindowAuthor.value,
+        pagesNode: +modalWindowPages.value,
+        sizeNode: modalWindowSize.value,
+        qualityNode: modalWindowQuality.value,
+        languageNode: modalWindowLanguage.value,
+        yearNode: +modalWindowYear.value,
+        descriptionNode: modalWindowDescription.value
+    };
+    fetch(myUrl, {
+        method: 'POST',
+        body: JSON.stringify(post),
+        headers: {
+                    'Content-Type': 'application/json',
+                 }
+    })
+    .then(closeModal)
+    .then(getBooks);
+}
+    
 
 //DELETE REQUEST
      function deleteBook(id){
@@ -131,7 +150,6 @@ const closeModal = () => {
 
 editBtn.addEventListener("click", () => put());
 
-
 function put(){
     let id = bookId;
     let post = {
@@ -156,8 +174,26 @@ function put(){
     .then(getBooks);
 };
 
+//VALIDATION
 
+createBtn.addEventListener("click", () => {
 
+        modalWindowItems.forEach((items) => {
+            if(items.value === ""){
+                items.style.outline = "1px solid yellow";
+            }
+            else if(items !== ""){
+                items.style.outline = "1px solid green";
+            }
+        });
+        
+     const isEmpty =   listOfFieldsCreateBook.every(input => {
+         return input.value;
+     });
+     if(isEmpty){
+         postBook();
+     }
+        });
 
 
 
