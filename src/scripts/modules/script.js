@@ -14,8 +14,8 @@ let modalWindowLanguage = document.querySelector("#language");
 let modalWindowYear = document.querySelector("#year");
 let modalWindowImg = document.querySelector("#img");
 let modalWindowDescription = document.querySelector("#modal_window_description");
-let create_btn = document.querySelector(".create_btn");
-
+let createBtn = document.querySelector(".create_btn");
+let editBtn = document.querySelector(".edit_btn");
 
 addBookBtn.addEventListener("click", () => {
 modalWindow.style.display = "block";
@@ -65,8 +65,11 @@ const closeModal = () => {
                 bookDescription.innerHTML = `<b>Описание: </b>${oneBook.descriptionNode}`;
 
                 let changeBtn = book.querySelector(".change");
+                changeBtn.addEventListener("click", () => changeBook(oneBook));
+
                 let deleteBtn = book.querySelector(".delete");
                 deleteBtn.addEventListener("click", () => deleteBook(oneBook.id));
+
                 sectionForBooks.appendChild(book);
             });
         });
@@ -74,7 +77,7 @@ const closeModal = () => {
     getBooks();
 
 //POST REQUEST
-    create_btn.addEventListener("click", () => {
+    createBtn.addEventListener("click", () => {
         let post = {
             imgNode: modalWindowImg.value,
             nameNode: modalWindowName.value,
@@ -105,6 +108,47 @@ const closeModal = () => {
         .then(getBooks);
      }
 
+//CHANGE REQUEST
+    function changeBook(oneBook){
+        modalWindow.style.display = "block";
+        createBtn.style.display = "none";
+        editBtn.style.display = "block";
+        
+        modalWindowName.value = oneBook.nameNode;
+        modalWindowAuthor.value = oneBook.authorNode;
+        modalWindowPages.value = oneBook.pagesNode;
+        modalWindowSize.value = oneBook.sizeNode;
+        modalWindowQuality.value = oneBook.qualityNode;
+        modalWindowLanguage.value = oneBook.languageNode;
+        modalWindowYear.value = oneBook.yearNode;
+        modalWindowImg.value = oneBook.imgNode;
+        modalWindowDescription.value = oneBook.descriptionNode;
+
+        editBtn.addEventListener("click", () => put(oneBook.id));
+};
+
+function put(id){
+    let post = {
+        imgNode: modalWindowImg.value,
+        nameNode: modalWindowName.value,
+        authotNode: modalWindowAuthor.value,
+        pagesNode: +modalWindowPages.value,
+        sizeNode: modalWindowSize.value,
+        qualityNode: modalWindowQuality.value,
+        languageNode: modalWindowLanguage.value,
+        yearNode: +modalWindowYear.value,
+        descriptionNode: modalWindowDescription.value
+    };
+    fetch(`${myUrl}/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(post),
+        headers: {
+                    'Content-Type': 'application/json',
+                 }
+    })
+    .then(closeModal)
+    .then(getBooks);
+};
 
 
 
