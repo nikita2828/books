@@ -17,6 +17,8 @@ let modalWindowDescription = document.querySelector("#modal_window_description")
 let createBtn = document.querySelector(".create_btn");
 let editBtn = document.querySelector(".edit_btn");
 
+let bookId = null;
+
 addBookBtn.addEventListener("click", () => {
 modalWindow.style.display = "block";
 });
@@ -110,6 +112,7 @@ const closeModal = () => {
 
 //CHANGE REQUEST
     function changeBook(oneBook){
+        bookId = oneBook;
         modalWindow.style.display = "block";
         createBtn.style.display = "none";
         editBtn.style.display = "block";
@@ -124,10 +127,13 @@ const closeModal = () => {
         modalWindowImg.value = oneBook.imgNode;
         modalWindowDescription.value = oneBook.descriptionNode;
 
-        editBtn.addEventListener("click", () => put(oneBook.id));
 };
 
-function put(id){
+editBtn.addEventListener("click", () => put());
+
+
+function put(){
+    let id = bookId;
     let post = {
         imgNode: modalWindowImg.value,
         nameNode: modalWindowName.value,
@@ -139,7 +145,7 @@ function put(id){
         yearNode: +modalWindowYear.value,
         descriptionNode: modalWindowDescription.value
     };
-    fetch(`${myUrl}/${id}`, {
+    fetch(`${myUrl}/${id.id}`, {
         method: 'PUT',
         body: JSON.stringify(post),
         headers: {
