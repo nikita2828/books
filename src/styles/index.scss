@@ -76,24 +76,23 @@ body {
 .section {
   width: 80%;
 }
-.change_delete{
+.change_delete {
   background-color: rgb(165, 42, 42);
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
 }
-.section_btn{
+.section_btn {
   padding: 5px;
   margin: 1px;
   background-color: rgb(99, 99, 99);
   color: #ffffff;
   transition: background-color 0.3s;
-
 }
-.section_btn:hover{
+.section_btn:hover {
   background-color: rgb(75, 74, 74);
 }
-.section_btn:active{
+.section_btn:active {
   background-color: #000000;
 }
 .section_img {
@@ -120,7 +119,7 @@ body {
 .footer_item {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
-.modal_window_background{
+.modal_window_background {
   display: none;
   background-color: #3832329c;
   width: 100%;
@@ -130,7 +129,7 @@ body {
   left: 0;
 }
 
-.modal_window{
+.modal_window {
   width: 500px;
   background-color: rgb(165, 42, 42);
   position: absolute;
@@ -139,7 +138,7 @@ body {
   left: 50%;
   border-radius: 20px;
 }
-.modal_window_item{
+.modal_window_item {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -147,25 +146,24 @@ body {
   margin-left: 3px;
   margin-right: 3px;
 }
-h1{
+h1 {
   color: #ffffff;
   text-align: center;
 }
-.modal_window_item label{
+.modal_window_item label {
   color: #ffffff;
   margin-bottom: 5px;
- 
 }
-.modal_window_item input{
+.modal_window_item input {
   min-width: 200px;
   padding-left: 5px;
 }
-#modal_window_description{
+#modal_window_description {
   width: 98%;
   height: 50px;
   margin-left: 3px;
 }
-.modal_window_btn{
+.modal_window_btn {
   width: 100%;
   display: flex;
   justify-content: flex-end;
@@ -173,6 +171,6 @@ h1{
 .modal_window_btn button:last-child {
   margin-right: 15px;
 }
-.edit_btn{
+.edit_btn {
   display: none;
 }
