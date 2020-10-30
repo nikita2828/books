@@ -28,6 +28,7 @@ let listOfFieldsCreateBook = [
     modalWindowImg,
     modalWindowDescription
 ];
+let sectionBooks = document.querySelector(".section_books");
 
 let bookId = null;
 
@@ -206,5 +207,22 @@ createBtn.addEventListener("click", () => {
             });
         });
 
+//SEARCH
+
+let search = document.querySelector(".search");
+
+search.addEventListener("keyup", () => {
+    let searchValue = search.value.toUpperCase();
+    let sectionForOneBook = sectionForBooks.querySelectorAll(".section_for_one_book");
+
+    for (let i = 0; i < sectionForOneBook.length; i++){
+        let name = sectionForOneBook[i].querySelectorAll(".name_item")[0];
+        if (name.innerHTML.toUpperCase().indexOf(searchValue) > -1) {
+            sectionForOneBook[i].style.display = "block";
+          } else {
+            sectionForOneBook[i].style.display = "none";
+          }
+    }
+});
 
 
