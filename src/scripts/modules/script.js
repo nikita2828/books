@@ -93,20 +93,21 @@ function getBooks() {
         bookYear.innerHTML = `<b>Год: </b>${oneBook.yearNode}`;
         bookDescription.innerHTML = `<b>Описание: </b>${oneBook.descriptionNode}`;
 
-        let listOfGet = [
-          bookPages,
-          bookSize,
-          bookQuality,
-          bookLanguage,
-          bookYear,
-        ];
-        for (var key in oneBook) {
-          if (!oneBook[key]) {
-            console.log("hi");
-            listOfGet.forEach((i) => (i.innerHTML = ""));
-          }
+        if (!oneBook.pagesNode) {
+          bookPages.remove();
         }
-
+        if (!oneBook.sizeNode) {
+          bookSize.remove();
+        }
+        if (!oneBook.qualityNode) {
+          bookQuality.remove();
+        }
+        if (!oneBook.languageNode) {
+          bookLanguage.remove();
+        }
+        if (!oneBook.yearNode) {
+          bookYear.remove();
+        }
         let changeBtn = book.querySelector(".change");
         changeBtn.addEventListener("click", () => changeBook(oneBook));
 
@@ -237,4 +238,8 @@ search.addEventListener("keyup", () => {
       sectionForOneBook[i].style.display = "none";
     }
   }
+});
+//
+sectionForBooks.forEach((i) => {
+  let b = document.querySelectorAll("b");
 });
