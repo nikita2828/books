@@ -197,7 +197,6 @@ function put() {
 }
 
 //VALIDATION
-
 createBtn.addEventListener("click", () => {
   listOfFieldsCreateBook.forEach((items) => {
     if (!items.value) {
@@ -208,7 +207,8 @@ createBtn.addEventListener("click", () => {
   });
 
   const isEmpty = listForPostRequest.every((input) => input.value);
-  if (isEmpty) {
+
+  if (modalWindowDescription.value.length > 20 && isEmpty) {
     postBook();
   }
 });
@@ -224,7 +224,6 @@ listOfFieldsCreateBook.forEach((el) => {
 });
 
 //SEARCH
-
 search.addEventListener("keyup", () => {
   let searchValue = search.value.toUpperCase();
   let sectionForOneBook = sectionForBooks.querySelectorAll(
