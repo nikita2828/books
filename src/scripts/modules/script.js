@@ -108,6 +108,7 @@ function getBooks() {
         if (!oneBook.yearNode) {
           bookYear.remove();
         }
+
         let changeBtn = book.querySelector(".change");
         changeBtn.addEventListener("click", () => changeBook(oneBook));
 
@@ -239,7 +240,5 @@ search.addEventListener("keyup", () => {
     }
   }
 });
-//
-sectionForBooks.forEach((i) => {
-  let b = document.querySelectorAll("b");
-});
+
+//hi branch line
