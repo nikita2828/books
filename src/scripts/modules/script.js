@@ -178,11 +178,11 @@ function put(){
 
 createBtn.addEventListener("click", () => {
 
-        modalWindowItems.forEach((items) => {
-            if(items.value === ""){
+        listOfFieldsCreateBook.forEach((items) => {
+            if(!items.value){
                 items.style.outline = "1px solid yellow";
             }
-            else if(items !== ""){
+            else if(items.value){
                 items.style.outline = "1px solid green";
             }
         });
@@ -193,6 +193,17 @@ createBtn.addEventListener("click", () => {
      if(isEmpty){
          postBook();
      }
+        });
+
+        listOfFieldsCreateBook.forEach(el => {
+            el.addEventListener("blur", () => {
+                if(!el.value){
+                    el.style.outline = "1px solid yellow";
+                }
+                else{
+                    el.style.outline = "1px solid green";
+                }
+            });
         });
 
 
