@@ -83,29 +83,29 @@ function getBooks() {
         let bookYear = book.querySelector(".year_item");
         let bookDescription = book.querySelector(".description_item");
 
-        bookImg.setAttribute("src", oneBook.imgNode);
-        bookName.innerHTML = `<b>Название: </b> ${oneBook.nameNode}`;
-        bookAuthor.innerHTML = `<b>Автор: </b>${oneBook.authorNode}`;
-        bookPages.innerHTML = `<b>Количество страниц: </b>${oneBook.pagesNode}`;
-        bookSize.innerHTML = `<b>Размер: </b>${oneBook.sizeNode}`;
-        bookQuality.innerHTML = `<b>Качество: </b>${oneBook.qualityNode}`;
-        bookLanguage.innerHTML = `<b>Язык: </b>${oneBook.languageNode}`;
-        bookYear.innerHTML = `<b>Год: </b>${oneBook.yearNode}`;
-        bookDescription.innerHTML = `<b>Описание: </b>${oneBook.descriptionNode}`;
+        bookImg.setAttribute("src", oneBook.imgServer);
+        bookName.innerHTML = `<b>Название: </b> ${oneBook.nameServer}`;
+        bookAuthor.innerHTML = `<b>Автор: </b>${oneBook.authorServer}`;
+        bookPages.innerHTML = `<b>Количество страниц: </b>${oneBook.pagesServer}`;
+        bookSize.innerHTML = `<b>Размер: </b>${oneBook.sizeServer}`;
+        bookQuality.innerHTML = `<b>Качество: </b>${oneBook.qualityServer}`;
+        bookLanguage.innerHTML = `<b>Язык: </b>${oneBook.languageServer}`;
+        bookYear.innerHTML = `<b>Год: </b>${oneBook.yearServer}`;
+        bookDescription.innerHTML = `<b>Описание: </b>${oneBook.descriptionServer}`;
 
-        if (!oneBook.pagesNode) {
+        if (!oneBook.pagesServer) {
           bookPages.remove();
         }
-        if (!oneBook.sizeNode) {
+        if (!oneBook.sizeServer) {
           bookSize.remove();
         }
-        if (!oneBook.qualityNode) {
+        if (!oneBook.qualityServer) {
           bookQuality.remove();
         }
-        if (!oneBook.languageNode) {
+        if (!oneBook.languageServer) {
           bookLanguage.remove();
         }
-        if (!oneBook.yearNode) {
+        if (!oneBook.yearServer) {
           bookYear.remove();
         }
 
@@ -124,15 +124,15 @@ getBooks();
 //POST REQUEST
 function postBook() {
   let post = {
-    imgNode: modalWindowImg.value,
-    nameNode: modalWindowName.value,
-    authorNode: modalWindowAuthor.value,
-    pagesNode: +modalWindowPages.value,
-    sizeNode: modalWindowSize.value,
-    qualityNode: modalWindowQuality.value,
-    languageNode: modalWindowLanguage.value,
-    yearNode: +modalWindowYear.value,
-    descriptionNode: modalWindowDescription.value,
+    imgServer: modalWindowImg.value,
+    nameServer: modalWindowName.value,
+    authorServer: modalWindowAuthor.value,
+    pagesServer: +modalWindowPages.value,
+    sizeServer: modalWindowSize.value,
+    qualityServer: modalWindowQuality.value,
+    languageServer: modalWindowLanguage.value,
+    yearServer: +modalWindowYear.value,
+    descriptionServer: modalWindowDescription.value,
   };
   fetch(myUrl, {
     method: "POST",
@@ -159,15 +159,15 @@ function changeBook(oneBook) {
   createBtn.style.display = "none";
   editBtn.style.display = "block";
 
-  modalWindowName.value = oneBook.nameNode;
-  modalWindowAuthor.value = oneBook.authorNode;
-  modalWindowPages.value = oneBook.pagesNode;
-  modalWindowSize.value = oneBook.sizeNode;
-  modalWindowQuality.value = oneBook.qualityNode;
-  modalWindowLanguage.value = oneBook.languageNode;
-  modalWindowYear.value = oneBook.yearNode;
-  modalWindowImg.value = oneBook.imgNode;
-  modalWindowDescription.value = oneBook.descriptionNode;
+  modalWindowName.value = oneBook.nameServer;
+  modalWindowAuthor.value = oneBook.authorServer;
+  modalWindowPages.value = oneBook.pagesServer;
+  modalWindowSize.value = oneBook.sizeServer;
+  modalWindowQuality.value = oneBook.qualityServer;
+  modalWindowLanguage.value = oneBook.languageServer;
+  modalWindowYear.value = oneBook.yearServer;
+  modalWindowImg.value = oneBook.imgServer;
+  modalWindowDescription.value = oneBook.descriptionServer;
 }
 
 editBtn.addEventListener("click", () => put());
@@ -175,15 +175,15 @@ editBtn.addEventListener("click", () => put());
 function put() {
   let id = bookId;
   let post = {
-    imgNode: modalWindowImg.value,
-    nameNode: modalWindowName.value,
+    imgServer: modalWindowImg.value,
+    nameServer: modalWindowName.value,
     authotNode: modalWindowAuthor.value,
-    pagesNode: +modalWindowPages.value,
-    sizeNode: modalWindowSize.value,
-    qualityNode: modalWindowQuality.value,
-    languageNode: modalWindowLanguage.value,
-    yearNode: +modalWindowYear.value,
-    descriptionNode: modalWindowDescription.value,
+    pagesServer: +modalWindowPages.value,
+    sizeServer: modalWindowSize.value,
+    qualityServer: modalWindowQuality.value,
+    languageServer: modalWindowLanguage.value,
+    yearServer: +modalWindowYear.value,
+    descriptionServer: modalWindowDescription.value,
   };
   fetch(`${myUrl}/${id.id}`, {
     method: "PUT",
