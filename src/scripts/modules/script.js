@@ -1,5 +1,6 @@
 import { templateBook } from "./templateBook";
 const myUrl = "http://localhost:2828/posts";
+const myUrlAuthors = "http://localhost:2828/authors";
 let addBookBtn = document.querySelector(".add_book_btn");
 let cancelBtn = document.querySelector(".cancel_btn");
 let modalWindow = document.querySelector(".modal_window_background");
@@ -17,6 +18,7 @@ let modalWindowImg = document.querySelector("#img");
 let modalWindowDescription = document.querySelector(
   "#modal_window_description"
 );
+
 let createBtn = document.querySelector(".create_btn");
 let editBtn = document.querySelector(".edit_btn");
 let modalWindowItems = document.querySelectorAll(".modal_window_items");
@@ -165,6 +167,7 @@ function changeBook(oneBook) {
   modalWindowSize.value = oneBook.sizeServer;
   modalWindowQuality.value = oneBook.qualityServer;
   modalWindowLanguage.value = oneBook.languageServer;
+
   modalWindowYear.value = oneBook.yearServer;
   modalWindowImg.value = oneBook.imgServer;
   modalWindowDescription.value = oneBook.descriptionServer;
@@ -177,7 +180,7 @@ function put() {
   let post = {
     imgServer: modalWindowImg.value,
     nameServer: modalWindowName.value,
-    authotNode: modalWindowAuthor.value,
+    authorServer: modalWindowAuthor.value,
     pagesServer: +modalWindowPages.value,
     sizeServer: modalWindowSize.value,
     qualityServer: modalWindowQuality.value,
@@ -239,3 +242,21 @@ search.addEventListener("keyup", () => {
     }
   }
 });
+
+//GET REQUST FOR SELECT
+function getAuthors() {
+  fetch(myUrlAuthors)
+    .then((response) => response.json())
+    .then((authors) => {
+      authors.forEach((author) => {
+        const select = document.querySelector(".author_select");
+        let option = document.createElement("option");
+        option.classList.add("author_option");
+
+        option.innerHTML = `${author.author}`;
+        select.appendChild(option);
+      });
+    });
+}
+
+getAuthors();
