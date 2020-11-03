@@ -31,7 +31,6 @@ let listOfFieldsCreateBook = [
   modalWindowLanguage,
   modalWindowYear,
   modalWindowImg,
-  modalWindowDescription,
 ];
 let listForPostRequest = [
   modalWindowName,
@@ -61,6 +60,7 @@ const closeModal = () => {
   modalWindowItems.forEach((item) => {
     item.value = "";
     item.style.outline = "";
+    item.nextElementSibling.style.display = "none";
   });
 };
 
@@ -204,8 +204,10 @@ createBtn.addEventListener("click", () => {
   listOfFieldsCreateBook.forEach((items) => {
     if (!items.value) {
       items.style.outline = "1px solid yellow";
+      items.nextElementSibling.style.display = "block";
     } else if (items.value) {
       items.style.outline = "1px solid green";
+      items.nextElementSibling.style.display = "none";
     }
   });
 
@@ -214,14 +216,35 @@ createBtn.addEventListener("click", () => {
   if (modalWindowDescription.value.length > 20 && isEmpty) {
     postBook();
   }
+  if (modalWindowDescription.value.length < 20) {
+    modalWindowDescription.style.outline = "1px solid yellow";
+
+    modalWindowDescription.nextElementSibling.style.display = "block";
+  } else {
+    modalWindowDescription.style.outline = "1px solid green";
+
+    modalWindowDescription.nextElementSibling.style.display = "none";
+  }
+});
+
+modalWindowDescription.addEventListener("blur", () => {
+  if (modalWindowDescription.value.length < 20) {
+    modalWindowDescription.style.outline = "1px solid yellow";
+    modalWindowDescription.nextElementSibling.style.display = "block";
+  } else {
+    modalWindowDescription.style.outline = "1px solid green";
+    modalWindowDescription.nextElementSibling.style.display = "none";
+  }
 });
 
 listOfFieldsCreateBook.forEach((el) => {
   el.addEventListener("blur", () => {
     if (!el.value) {
       el.style.outline = "1px solid yellow";
+      el.nextElementSibling.style.display = "block";
     } else {
       el.style.outline = "1px solid green";
+      el.nextElementSibling.style.display = "none";
     }
   });
 });
@@ -258,5 +281,4 @@ function getAuthors() {
       });
     });
 }
-
 getAuthors();
