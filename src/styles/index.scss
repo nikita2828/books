@@ -67,11 +67,11 @@ body {
   background-color: rgb(191, 184, 175);
   width: 20%;
 }
-.aside_item {
+.aside_item a {
   color: rgb(99, 99, 99);
-  cursor: pointer;
   padding: 5px 10px;
   margin: 0;
+  text-decoration: none;
 }
 .section {
   width: 80%;

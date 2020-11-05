@@ -1,5 +1,5 @@
 import { templateBook } from "./templateBook";
-const myUrl = "http://localhost:2828/posts";
+import { ROUTES } from "../constants/routes";
 const myUrlAuthors = "http://localhost:2828/authors";
 let addBookBtn = document.querySelector(".add_book_btn");
 let cancelBtn = document.querySelector(".cancel_btn");
@@ -65,7 +65,7 @@ const closeModal = () => {
 };
 
 //GET REQUEST
-function getBooks() {
+function getBooks(myUrl) {
   sectionForBooks.innerHTML = "";
   fetch(myUrl)
     .then((response) => response.json())
@@ -121,7 +121,7 @@ function getBooks() {
       });
     });
 }
-getBooks();
+// getBooks();
 
 //POST REQUEST
 function postBook() {
@@ -276,9 +276,63 @@ function getAuthors() {
         let option = document.createElement("option");
         option.classList.add("author_option");
 
-        option.innerHTML = `${author.author}`;
+        option.innerText = `${author.author}`;
         select.appendChild(option);
       });
     });
 }
 getAuthors();
+
+//HISTORY API
+const getCompBooks = () => {
+  console.log("render for comp");
+  const myUrlComp = "http://localhost:2828/comp";
+  getBooks(myUrlComp);
+};
+
+const getScienceBooks = () => {
+  console.log("render for science");
+  const myUrlScience = "http://localhost:2828/science";
+  getBooks(myUrlScience);
+};
+const getAllBooks = () => {
+  console.log("render for home");
+  getCompBooks();
+  getScienceBooks();
+};
+function render(path) {
+  if (path === ROUTES.COMP) {
+    getCompBooks();
+  }
+  if (path === ROUTES.SCIENCE) {
+    getScienceBooks();
+  }
+  if (path === ROUTES.HOME) {
+    getAllBooks();
+  }
+}
+
+const a = document.querySelectorAll(".a");
+a.forEach((link) => {
+  link.addEventListener("click", (e) => {
+    e.preventDefault();
+    const href = e.target.getAttribute("href");
+    history.pushState(null, "", href);
+    render(href);
+  });
+});
+
+window.onload = () => {
+  if (location.pathname === "/") {
+    location.pathname = ROUTES.HOME;
+    render(ROUTES.HOME);
+  }
+};
+
+window.addEventListener("popstate", () => {
+  render(location.pathname);
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  render(location.pathname);
+});
