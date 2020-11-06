@@ -148,9 +148,15 @@ function postBook(postUrl) {
 
 //DELETE REQUEST
 function deleteBook(id) {
-  fetch(`${myUrl}/${id}`, {
+  let urlForDel = null;
+  if (location.pathname === "/comp") {
+    urlForDel = "http://localhost:2828/comp";
+  } else if (location.pathname === "/science") {
+    urlForDel = "http://localhost:2828/science";
+  }
+  fetch(`${urlForDel}/${id}`, {
     method: "DELETE",
-  }).then(getBooks);
+  }).then(getBooks(urlForDel));
 }
 
 //CHANGE REQUEST
@@ -187,7 +193,13 @@ function put() {
     yearServer: +modalWindowYear.value,
     descriptionServer: modalWindowDescription.value,
   };
-  fetch(`${myUrl}/${id.id}`, {
+  let urlForPut = null;
+  if (location.pathname === "/comp") {
+    urlForPut = "http://localhost:2828/comp";
+  } else if (location.pathname === "/science") {
+    urlForPut = "http://localhost:2828/science";
+  }
+  fetch(`${urlForPut}/${id.id}`, {
     method: "PUT",
     body: JSON.stringify(post),
     headers: {
@@ -195,38 +207,44 @@ function put() {
     },
   })
     .then(closeModal)
-    .then(getBooks);
+    .then(getBooks(urlForPut));
 }
 
 //VALIDATION
-function validationForPost(validationUrl) {
-  createBtn.addEventListener("click", () => {
-    listOfFieldsCreateBook.forEach((items) => {
-      if (!items.value) {
-        items.style.outline = "1px solid yellow";
-        items.nextElementSibling.style.display = "block";
-      } else if (items.value) {
-        items.style.outline = "1px solid green";
-        items.nextElementSibling.style.display = "none";
-      }
-    });
 
-    const isEmpty = listForPostRequest.every((input) => input.value);
-
-    if (modalWindowDescription.value.length > 20 && isEmpty) {
-      postBook(validationUrl);
-    }
-    if (modalWindowDescription.value.length < 20) {
-      modalWindowDescription.style.outline = "1px solid yellow";
-
-      modalWindowDescription.nextElementSibling.style.display = "block";
-    } else {
-      modalWindowDescription.style.outline = "1px solid green";
-
-      modalWindowDescription.nextElementSibling.style.display = "none";
+createBtn.addEventListener("click", () => {
+  let urlForVal = null;
+  if (location.pathname === "/comp") {
+    urlForVal = "http://localhost:2828/comp";
+  } else if (location.pathname === "/science") {
+    urlForVal = "http://localhost:2828/science";
+  }
+  console.log("----------------goPostBook");
+  listOfFieldsCreateBook.forEach((items) => {
+    if (!items.value) {
+      items.style.outline = "1px solid yellow";
+      items.nextElementSibling.style.display = "block";
+    } else if (items.value) {
+      items.style.outline = "1px solid green";
+      items.nextElementSibling.style.display = "none";
     }
   });
-}
+
+  const isEmpty = listForPostRequest.every((input) => input.value);
+
+  if (modalWindowDescription.value.length > 20 && isEmpty) {
+    postBook(urlForVal);
+  }
+  if (modalWindowDescription.value.length < 20) {
+    modalWindowDescription.style.outline = "1px solid yellow";
+
+    modalWindowDescription.nextElementSibling.style.display = "block";
+  } else {
+    modalWindowDescription.style.outline = "1px solid green";
+
+    modalWindowDescription.nextElementSibling.style.display = "none";
+  }
+});
 
 modalWindowDescription.addEventListener("blur", () => {
   if (modalWindowDescription.value.length < 20) {
@@ -297,8 +315,8 @@ a.forEach((link) => {
 
 window.onload = () => {
   if (location.pathname === "/") {
-    location.pathname = ROUTES.HOME;
-    render(ROUTES.HOME);
+    location.pathname = ROUTES.COMP;
+    render(ROUTES.COMP);
   }
 };
 
@@ -313,14 +331,9 @@ document.addEventListener("DOMContentLoaded", () => {
 function render(path) {
   if (path === ROUTES.COMP) {
     getCompBooks();
-    postCompBook();
   }
   if (path === ROUTES.SCIENCE) {
     getScienceBooks();
-    // postScienceBook();
-  }
-  if (path === ROUTES.HOME) {
-    getAllBooks();
   }
 }
 
@@ -335,17 +348,3 @@ const getScienceBooks = () => {
   const myUrlScience = "http://localhost:2828/science";
   getBooks(myUrlScience);
 };
-const getAllBooks = () => {
-  console.log("render for home");
-  getCompBooks();
-  getScienceBooks();
-};
-
-const postCompBook = () => {
-  const myUrlComp = "http://localhost:2828/comp";
-  validationForPost(myUrlComp);
-};
-// const postScienceBook = () => {
-//   const myUrlScience = "http://localhost:2828/science";
-//   validationForPost(myUrlScience);
-// };
