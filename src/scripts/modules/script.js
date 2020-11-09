@@ -340,6 +340,9 @@ function render(path) {
   if (path === ROUTES.SCIENCE) {
     getScienceBooks();
   }
+  if (path === ROUTES.HOME) {
+    getAllBooks();
+  }
 }
 
 const getCompBooks = () => {
@@ -363,5 +366,15 @@ const getScienceBooks = () => {
         (book) => book.categoryServer === "science"
       );
       getBooks(booksScience);
+    });
+};
+const getAllBooks = () => {
+  console.log("render for science");
+  sectionForBooks.innerHTML = "";
+  fetch(myUrlBooks)
+    .then((response) => response.json())
+    .then((books) => {
+      const allBooks = books;
+      getBooks(allBooks);
     });
 };
