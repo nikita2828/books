@@ -147,7 +147,7 @@ function postBook() {
     },
   })
     .then(closeModal)
-    .then(render(location.pathname))
+    .then(getEverything(location.pathname))
     .then(console.log("------------------postBook"));
 }
 
@@ -155,7 +155,7 @@ function postBook() {
 function deleteBook(id) {
   fetch(`${myUrlBooks}/${id}`, {
     method: "DELETE",
-  }).then(render(location.pathname));
+  }).then(getEverything(location.pathname));
 }
 
 //CHANGE REQUEST
@@ -201,7 +201,7 @@ function put() {
     },
   })
     .then(closeModal)
-    .then(render(location.pathname));
+    .then(getEverything(location.pathname));
 }
 
 //VALIDATION
@@ -314,67 +314,46 @@ a.forEach((link) => {
     e.preventDefault();
     const href = e.target.getAttribute("href");
     history.pushState(null, "", href);
-    render(href);
+    getEverything(href);
   });
 });
 
 window.onload = () => {
   if (location.pathname === "/") {
     location.pathname = ROUTES.COMP;
-    render(ROUTES.COMP);
+    getEverything(ROUTES.COMP);
   }
 };
 
 window.addEventListener("popstate", () => {
-  render(location.pathname);
+  getEverything(location.pathname);
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  render(location.pathname);
+  getEverything(location.pathname);
 });
 
-function render(path) {
-  if (path === ROUTES.COMP) {
-    getCompBooks();
-  }
-  if (path === ROUTES.SCIENCE) {
-    getScienceBooks();
-  }
-  if (path === ROUTES.HOME) {
-    getAllBooks();
-  }
-}
-
-const getCompBooks = () => {
-  console.log("render for comp");
+const getEverything = (path) => {
+  console.log("getEverything everything");
   sectionForBooks.innerHTML = "";
   fetch(myUrlBooks)
     .then((response) => response.json())
     .then((books) => {
-      const booksComp = books.filter((book) => book.categoryServer === "comp");
-      getBooks(booksComp);
-    });
-};
-
-const getScienceBooks = () => {
-  console.log("render for science");
-  sectionForBooks.innerHTML = "";
-  fetch(myUrlBooks)
-    .then((response) => response.json())
-    .then((books) => {
-      const booksScience = books.filter(
-        (book) => book.categoryServer === "science"
-      );
-      getBooks(booksScience);
-    });
-};
-const getAllBooks = () => {
-  console.log("render for science");
-  sectionForBooks.innerHTML = "";
-  fetch(myUrlBooks)
-    .then((response) => response.json())
-    .then((books) => {
-      const allBooks = books;
-      getBooks(allBooks);
+      if (path === ROUTES.COMP) {
+        const booksComp = books.filter(
+          (book) => book.categoryServer === "comp"
+        );
+        getBooks(booksComp);
+      }
+      if (path === ROUTES.SCIENCE) {
+        const booksScience = books.filter(
+          (book) => book.categoryServer === "science"
+        );
+        getBooks(booksScience);
+      }
+      if (path === ROUTES.HOME) {
+        const allBooks = books;
+        getBooks(allBooks);
+      }
     });
 };
