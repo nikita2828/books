@@ -1,6 +1,7 @@
 import { templateBook } from "./templateBook";
 import { ROUTES } from "../constants/routes";
 const myUrlAuthors = "http://localhost:2828/authors";
+const myUrlCategory = "http://localhost:2828/category";
 const myUrlBooks = "http://localhost:2828/books";
 let addBookBtn = document.querySelector(".add_book_btn");
 let cancelBtn = document.querySelector(".cancel_btn");
@@ -10,6 +11,7 @@ let search = document.querySelector(".search");
 
 let modalWindowName = document.querySelector("#name");
 let modalWindowAuthor = document.querySelector("#author");
+let modalWindowCategory = document.querySelector("#category");
 let modalWindowPages = document.querySelector("#pages");
 let modalWindowSize = document.querySelector("#size");
 let modalWindowQuality = document.querySelector("#quality");
@@ -26,6 +28,7 @@ let modalWindowItems = document.querySelectorAll(".modal_window_items");
 let listOfFieldsCreateBook = [
   modalWindowName,
   modalWindowAuthor,
+  modalWindowCategory,
   modalWindowPages,
   modalWindowSize,
   modalWindowQuality,
@@ -36,6 +39,7 @@ let listOfFieldsCreateBook = [
 let listForPostRequest = [
   modalWindowName,
   modalWindowAuthor,
+  modalWindowCategory,
   modalWindowDescription,
   modalWindowImg,
 ];
@@ -67,7 +71,6 @@ const closeModal = () => {
 
 //GET REQUEST
 function getBooks(myUrl) {
-  sectionForBooks.innerHTML = "";
   myUrl.forEach((oneBook) => {
     const book = document.createElement("div");
     book.classList.add("section_for_one_book");
@@ -76,6 +79,7 @@ function getBooks(myUrl) {
     let bookImg = book.querySelector(".img_item");
     let bookName = book.querySelector(".name_item");
     let bookAuthor = book.querySelector(".author_item");
+    let bookCategory = book.querySelector(".category_item");
     let bookPages = book.querySelector(".pages_item");
     let bookSize = book.querySelector(".size_item");
     let bookQuality = book.querySelector(".quality_item");
@@ -86,6 +90,7 @@ function getBooks(myUrl) {
     bookImg.setAttribute("src", oneBook.imgServer);
     bookName.innerHTML = `<b>Название: </b> ${oneBook.nameServer}`;
     bookAuthor.innerHTML = `<b>Автор: </b>${oneBook.authorServer}`;
+    bookCategory.innerHTML = `<b>Категрия: </b>${oneBook.categoryServer}`;
     bookPages.innerHTML = `<b>Количество страниц: </b>${oneBook.pagesServer}`;
     bookSize.innerHTML = `<b>Размер: </b>${oneBook.sizeServer}`;
     bookQuality.innerHTML = `<b>Качество: </b>${oneBook.qualityServer}`;
@@ -116,15 +121,17 @@ function getBooks(myUrl) {
     deleteBtn.addEventListener("click", () => deleteBook(oneBook.id));
 
     sectionForBooks.appendChild(book);
+    console.log("-------------getRequest end");
   });
 }
 
 //POST REQUEST
-function postBook(postUrl) {
+function postBook() {
   let post = {
     imgServer: modalWindowImg.value,
     nameServer: modalWindowName.value,
     authorServer: modalWindowAuthor.value,
+    categoryServer: modalWindowCategory.value,
     pagesServer: +modalWindowPages.value,
     sizeServer: modalWindowSize.value,
     qualityServer: modalWindowQuality.value,
@@ -132,7 +139,7 @@ function postBook(postUrl) {
     yearServer: +modalWindowYear.value,
     descriptionServer: modalWindowDescription.value,
   };
-  fetch(postUrl, {
+  fetch(myUrlBooks, {
     method: "POST",
     body: JSON.stringify(post),
     headers: {
@@ -140,20 +147,15 @@ function postBook(postUrl) {
     },
   })
     .then(closeModal)
-    .then(getBooks(postUrl));
+    .then(render(location.pathname))
+    .then(console.log("------------------postBook"));
 }
 
 //DELETE REQUEST
 function deleteBook(id) {
-  let urlForDel = null;
-  if (location.pathname === "/comp") {
-    urlForDel = "http://localhost:2828/comp";
-  } else if (location.pathname === "/science") {
-    urlForDel = "http://localhost:2828/science";
-  }
-  fetch(`${urlForDel}/${id}`, {
+  fetch(`${myUrlBooks}/${id}`, {
     method: "DELETE",
-  }).then(getBooks(urlForDel));
+  }).then(render(location.pathname));
 }
 
 //CHANGE REQUEST
@@ -183,6 +185,7 @@ function put() {
     imgServer: modalWindowImg.value,
     nameServer: modalWindowName.value,
     authorServer: modalWindowAuthor.value,
+    categoryServer: modalWindowCategory.value,
     pagesServer: +modalWindowPages.value,
     sizeServer: modalWindowSize.value,
     qualityServer: modalWindowQuality.value,
@@ -190,13 +193,7 @@ function put() {
     yearServer: +modalWindowYear.value,
     descriptionServer: modalWindowDescription.value,
   };
-  let urlForPut = null;
-  if (location.pathname === "/comp") {
-    urlForPut = "http://localhost:2828/comp";
-  } else if (location.pathname === "/science") {
-    urlForPut = "http://localhost:2828/science";
-  }
-  fetch(`${urlForPut}/${id.id}`, {
+  fetch(`${myUrlBooks}/${id.id}`, {
     method: "PUT",
     body: JSON.stringify(post),
     headers: {
@@ -204,19 +201,12 @@ function put() {
     },
   })
     .then(closeModal)
-    .then(getBooks(urlForPut));
+    .then(render(location.pathname));
 }
 
 //VALIDATION
 
 createBtn.addEventListener("click", () => {
-  let urlForVal = null;
-  if (location.pathname === "/comp") {
-    urlForVal = "http://localhost:2828/comp";
-  } else if (location.pathname === "/science") {
-    urlForVal = "http://localhost:2828/science";
-  }
-  console.log("----------------goPostBook");
   listOfFieldsCreateBook.forEach((items) => {
     if (!items.value) {
       items.style.outline = "1px solid yellow";
@@ -230,7 +220,8 @@ createBtn.addEventListener("click", () => {
   const isEmpty = listForPostRequest.every((input) => input.value);
 
   if (modalWindowDescription.value.length > 20 && isEmpty) {
-    postBook(urlForVal);
+    console.log("---------validation");
+    postBook();
   }
   if (modalWindowDescription.value.length < 20) {
     modalWindowDescription.style.outline = "1px solid yellow";
@@ -284,6 +275,23 @@ search.addEventListener("keyup", () => {
 
 //GET REQUST FOR SELECT
 function getAuthors() {
+  fetch(myUrlCategory)
+    .then((response) => response.json())
+    .then((categorys) => {
+      categorys.forEach((category) => {
+        const selectForCategory = document.querySelector(".category_select");
+        let optionForCategory = document.createElement("option");
+        optionForCategory.classList.add("category_option");
+
+        optionForCategory.innerText = `${category.category}`;
+        selectForCategory.appendChild(optionForCategory);
+      });
+    });
+}
+getAuthors();
+
+//GET REQUST FOR CATEGORY
+function getCategory() {
   fetch(myUrlAuthors)
     .then((response) => response.json())
     .then((authors) => {
@@ -297,7 +305,7 @@ function getAuthors() {
       });
     });
 }
-getAuthors();
+getCategory();
 
 //HISTORY API
 const a = document.querySelectorAll(".a");
@@ -336,20 +344,24 @@ function render(path) {
 
 const getCompBooks = () => {
   console.log("render for comp");
+  sectionForBooks.innerHTML = "";
   fetch(myUrlBooks)
     .then((response) => response.json())
     .then((books) => {
-      const booksComp = books.filter((book) => book.category === "comp");
+      const booksComp = books.filter((book) => book.categoryServer === "comp");
       getBooks(booksComp);
     });
 };
 
 const getScienceBooks = () => {
   console.log("render for science");
+  sectionForBooks.innerHTML = "";
   fetch(myUrlBooks)
     .then((response) => response.json())
     .then((books) => {
-      const booksScience = books.filter((book) => book.category === "science");
+      const booksScience = books.filter(
+        (book) => book.categoryServer === "science"
+      );
       getBooks(booksScience);
     });
 };
