@@ -70,21 +70,25 @@
               >Введите имя<br /><input
                 placeholder="Введите имя"
                 type="text"
-                id="name"
+                id="modal_input_name"
                 class="modal_window_items"
               />
               <div class="modal_window_warning">Вы не ввели имя</div></label
             >
             <label for="author"
               >Выберите автора <br />
-              <select name="author" id="author" class="author_select"></select>
+              <select
+                name="author"
+                id="modal_select_author"
+                class="author_select"
+              ></select>
               <div class="modal_window_warning">Вы не выбрали автора</div>
             </label>
             <label for="category"
               >Выберите автора <br />
               <select
                 name="category"
-                id="category"
+                id="modal_select_category"
                 class="category_select"
               ></select>
               <div class="modal_window_warning">Вы не выбрали категорию</div>
@@ -93,7 +97,7 @@
               >Введите количество страниц<br /><input
                 placeholder="Введите количество страниц"
                 type="number"
-                id="pages"
+                id="modal_input_pages"
                 class="modal_window_items"
               />
               <div class="modal_window_warning">Вы не ввели количество</div>
@@ -103,7 +107,7 @@
               >Введите размер файла<br /><input
                 placeholder="Введите размер фаила"
                 type="text"
-                id="size"
+                id="modal_input_size"
                 class="modal_window_items"
               />
               <div class="modal_window_warning">
@@ -115,7 +119,7 @@
               >Введите качество<br /><input
                 placeholder="Введите качество"
                 type="text"
-                id="quality"
+                id="modal_input_quality"
                 class="modal_window_items"
               />
               <div class="modal_window_warning">
@@ -127,7 +131,7 @@
               >Введите язык<br /><input
                 placeholder="Введите язык"
                 type="text"
-                id="language"
+                id="modal_input_language"
                 class="modal_window_items"
               />
               <div class="modal_window_warning">Вы не ввели язык</div></label
@@ -137,17 +141,17 @@
               >Введите год<br /><input
                 placeholder="Введите год"
                 type="number"
-                id="year"
+                id="modal_input_year"
                 class="modal_window_items"
               />
               <div class="modal_window_warning">Вы не ввели год</div></label
             >
 
-            <label for="year"
+            <label for="img"
               >Добавте обложку<br /><input
                 placeholder="Добавте обложку"
                 type="url"
-                id="img"
+                id="modal_input_img"
                 class="modal_window_items"
               />
               <div class="modal_window_warning">Вы не ввели обложку</div></label
@@ -160,7 +164,7 @@
               class="modal_window_items"
             ></textarea>
             <div class="modal_window_warning">
-              В описание должно быть минимум 20 символов
+              В описание должно быть минимум 10 символов
             </div>
           </div>
           <div class="modal_window_btn">

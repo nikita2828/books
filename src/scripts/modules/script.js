@@ -1,7 +1,7 @@
 import { templateBook } from "./templateBook";
-import { ROUTES } from "../constants/routes";
+import { routes } from "../constants/routes";
 const myUrlAuthors = "http://localhost:2828/authors";
-const myUrlCategory = "http://localhost:2828/category";
+const myUrlCategory = "http://localhost:2828/categories";
 const myUrlBooks = "http://localhost:2828/books";
 let addBookBtn = document.querySelector(".add_book_btn");
 let cancelBtn = document.querySelector(".cancel_btn");
@@ -9,15 +9,15 @@ let modalWindow = document.querySelector(".modal_window_background");
 let sectionForBooks = document.querySelector(".section_books");
 let search = document.querySelector(".search");
 
-let modalWindowName = document.querySelector("#name");
-let modalWindowAuthor = document.querySelector("#author");
-let modalWindowCategory = document.querySelector("#category");
-let modalWindowPages = document.querySelector("#pages");
-let modalWindowSize = document.querySelector("#size");
-let modalWindowQuality = document.querySelector("#quality");
-let modalWindowLanguage = document.querySelector("#language");
-let modalWindowYear = document.querySelector("#year");
-let modalWindowImg = document.querySelector("#img");
+let modalWindowName = document.querySelector("#modal_input_name");
+let modalWindowAuthor = document.querySelector("#modal_select_author");
+let modalWindowCategory = document.querySelector("#modal_select_category");
+let modalWindowPages = document.querySelector("#modal_input_pages");
+let modalWindowSize = document.querySelector("#modal_input_size");
+let modalWindowQuality = document.querySelector("#modal_input_quality");
+let modalWindowLanguage = document.querySelector("#modal_input_language");
+let modalWindowYear = document.querySelector("#modal_input_year");
+let modalWindowImg = document.querySelector("#modal_input_img");
 let modalWindowDescription = document.querySelector(
   "#modal_window_description"
 );
@@ -87,30 +87,30 @@ function getBooks(myUrl) {
     let bookYear = book.querySelector(".year_item");
     let bookDescription = book.querySelector(".description_item");
 
-    bookImg.setAttribute("src", oneBook.imgServer);
-    bookName.innerHTML = `<b>Название: </b> ${oneBook.nameServer}`;
-    bookAuthor.innerHTML = `<b>Автор: </b>${oneBook.authorServer}`;
-    bookCategory.innerHTML = `<b>Категрия: </b>${oneBook.categoryServer}`;
-    bookPages.innerHTML = `<b>Количество страниц: </b>${oneBook.pagesServer}`;
-    bookSize.innerHTML = `<b>Размер: </b>${oneBook.sizeServer}`;
-    bookQuality.innerHTML = `<b>Качество: </b>${oneBook.qualityServer}`;
-    bookLanguage.innerHTML = `<b>Язык: </b>${oneBook.languageServer}`;
-    bookYear.innerHTML = `<b>Год: </b>${oneBook.yearServer}`;
-    bookDescription.innerHTML = `<b>Описание: </b>${oneBook.descriptionServer}`;
+    bookImg.setAttribute("src", oneBook.imgData);
+    bookName.innerHTML = `<b>Название: </b> ${oneBook.nameData}`;
+    bookAuthor.innerHTML = `<b>Автор: </b>${oneBook.authorData}`;
+    bookCategory.innerHTML = `<b>Категрия: </b>${oneBook.categoryData}`;
+    bookPages.innerHTML = `<b>Количество страниц: </b>${oneBook.pagesData}`;
+    bookSize.innerHTML = `<b>Размер: </b>${oneBook.sizeData}`;
+    bookQuality.innerHTML = `<b>Качество: </b>${oneBook.qualityData}`;
+    bookLanguage.innerHTML = `<b>Язык: </b>${oneBook.languageData}`;
+    bookYear.innerHTML = `<b>Год: </b>${oneBook.yearData}`;
+    bookDescription.innerHTML = `<b>Описание: </b>${oneBook.descriptionData}`;
 
-    if (!oneBook.pagesServer) {
+    if (!oneBook.pagesData) {
       bookPages.remove();
     }
-    if (!oneBook.sizeServer) {
+    if (!oneBook.sizeData) {
       bookSize.remove();
     }
-    if (!oneBook.qualityServer) {
+    if (!oneBook.qualityData) {
       bookQuality.remove();
     }
-    if (!oneBook.languageServer) {
+    if (!oneBook.languageData) {
       bookLanguage.remove();
     }
-    if (!oneBook.yearServer) {
+    if (!oneBook.yearData) {
       bookYear.remove();
     }
 
@@ -121,23 +121,23 @@ function getBooks(myUrl) {
     deleteBtn.addEventListener("click", () => deleteBook(oneBook.id));
 
     sectionForBooks.appendChild(book);
-    console.log("-------------getRequest end");
+    console.log("---------------getRequest end");
   });
 }
 
 //POST REQUEST
 function postBook() {
   let post = {
-    imgServer: modalWindowImg.value,
-    nameServer: modalWindowName.value,
-    authorServer: modalWindowAuthor.value,
-    categoryServer: modalWindowCategory.value,
-    pagesServer: +modalWindowPages.value,
-    sizeServer: modalWindowSize.value,
-    qualityServer: modalWindowQuality.value,
-    languageServer: modalWindowLanguage.value,
-    yearServer: +modalWindowYear.value,
-    descriptionServer: modalWindowDescription.value,
+    imgData: modalWindowImg.value,
+    nameData: modalWindowName.value,
+    authorData: modalWindowAuthor.value,
+    categoryData: modalWindowCategory.value,
+    pagesData: +modalWindowPages.value,
+    sizeData: modalWindowSize.value,
+    qualityData: modalWindowQuality.value,
+    languageData: modalWindowLanguage.value,
+    yearData: +modalWindowYear.value,
+    descriptionData: modalWindowDescription.value,
   };
   fetch(myUrlBooks, {
     method: "POST",
@@ -147,8 +147,8 @@ function postBook() {
     },
   })
     .then(closeModal)
-    .then(getEverything(location.pathname))
-    .then(console.log("------------------postBook"));
+    .then(console.log("--------postBook"))
+    .then(getEverything(location.pathname));
 }
 
 //DELETE REQUEST
@@ -165,16 +165,16 @@ function changeBook(oneBook) {
   createBtn.style.display = "none";
   editBtn.style.display = "block";
 
-  modalWindowName.value = oneBook.nameServer;
-  modalWindowAuthor.value = oneBook.authorServer;
-  modalWindowPages.value = oneBook.pagesServer;
-  modalWindowSize.value = oneBook.sizeServer;
-  modalWindowQuality.value = oneBook.qualityServer;
-  modalWindowLanguage.value = oneBook.languageServer;
+  modalWindowName.value = oneBook.nameData;
+  modalWindowAuthor.value = oneBook.authorData;
+  modalWindowPages.value = oneBook.pagesData;
+  modalWindowSize.value = oneBook.sizeData;
+  modalWindowQuality.value = oneBook.qualityData;
+  modalWindowLanguage.value = oneBook.languageData;
 
-  modalWindowYear.value = oneBook.yearServer;
-  modalWindowImg.value = oneBook.imgServer;
-  modalWindowDescription.value = oneBook.descriptionServer;
+  modalWindowYear.value = oneBook.yearData;
+  modalWindowImg.value = oneBook.imgData;
+  modalWindowDescription.value = oneBook.descriptionData;
 }
 
 editBtn.addEventListener("click", () => put());
@@ -182,16 +182,16 @@ editBtn.addEventListener("click", () => put());
 function put() {
   let id = bookId;
   let post = {
-    imgServer: modalWindowImg.value,
-    nameServer: modalWindowName.value,
-    authorServer: modalWindowAuthor.value,
-    categoryServer: modalWindowCategory.value,
-    pagesServer: +modalWindowPages.value,
-    sizeServer: modalWindowSize.value,
-    qualityServer: modalWindowQuality.value,
-    languageServer: modalWindowLanguage.value,
-    yearServer: +modalWindowYear.value,
-    descriptionServer: modalWindowDescription.value,
+    imgData: modalWindowImg.value,
+    nameData: modalWindowName.value,
+    authorData: modalWindowAuthor.value,
+    categoryData: modalWindowCategory.value,
+    pagesData: +modalWindowPages.value,
+    sizeData: modalWindowSize.value,
+    qualityData: modalWindowQuality.value,
+    languageData: modalWindowLanguage.value,
+    yearData: +modalWindowYear.value,
+    descriptionData: modalWindowDescription.value,
   };
   fetch(`${myUrlBooks}/${id.id}`, {
     method: "PUT",
@@ -219,11 +219,11 @@ createBtn.addEventListener("click", () => {
 
   const isEmpty = listForPostRequest.every((input) => input.value);
 
-  if (modalWindowDescription.value.length > 20 && isEmpty) {
-    console.log("---------validation");
+  if (modalWindowDescription.value.length >= 10 && isEmpty) {
+    console.log("-----validation");
     postBook();
   }
-  if (modalWindowDescription.value.length < 20) {
+  if (modalWindowDescription.value.length < 10) {
     modalWindowDescription.style.outline = "1px solid yellow";
 
     modalWindowDescription.nextElementSibling.style.display = "block";
@@ -235,7 +235,7 @@ createBtn.addEventListener("click", () => {
 });
 
 modalWindowDescription.addEventListener("blur", () => {
-  if (modalWindowDescription.value.length < 20) {
+  if (modalWindowDescription.value.length < 10) {
     modalWindowDescription.style.outline = "1px solid yellow";
     modalWindowDescription.nextElementSibling.style.display = "block";
   } else {
@@ -273,43 +273,39 @@ search.addEventListener("keyup", () => {
   }
 });
 
-//GET REQUST FOR SELECT
-function getAuthors() {
+//GET REQUST FOR CATEGORY
+function getCategorys() {
   fetch(myUrlCategory)
     .then((response) => response.json())
     .then((categorys) => {
       categorys.forEach((category) => {
         const selectForCategory = document.querySelector(".category_select");
         let optionForCategory = document.createElement("option");
-        optionForCategory.classList.add("category_option");
-
-        optionForCategory.innerText = `${category.category}`;
+        optionForCategory.innerText = `${category.nameCategory}`;
         selectForCategory.appendChild(optionForCategory);
       });
     });
 }
-getAuthors();
+getCategorys();
 
-//GET REQUST FOR CATEGORY
-function getCategory() {
+//GET REQUST FOR AUTHORS
+function getAuthors() {
   fetch(myUrlAuthors)
     .then((response) => response.json())
     .then((authors) => {
       authors.forEach((author) => {
         const select = document.querySelector(".author_select");
         let option = document.createElement("option");
-        option.classList.add("author_option");
-
-        option.innerText = `${author.author}`;
+        option.innerText = `${author.nameAuthor}`;
         select.appendChild(option);
       });
     });
 }
-getCategory();
+getAuthors();
 
 //HISTORY API
-const a = document.querySelectorAll(".a");
-a.forEach((link) => {
+const link = document.querySelectorAll(".a");
+link.forEach((link) => {
   link.addEventListener("click", (e) => {
     e.preventDefault();
     const href = e.target.getAttribute("href");
@@ -317,13 +313,6 @@ a.forEach((link) => {
     getEverything(href);
   });
 });
-
-window.onload = () => {
-  if (location.pathname === "/") {
-    location.pathname = ROUTES.COMP;
-    getEverything(ROUTES.COMP);
-  }
-};
 
 window.addEventListener("popstate", () => {
   getEverything(location.pathname);
@@ -334,26 +323,27 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 const getEverything = (path) => {
-  console.log("getEverything everything");
+  console.log("-----------getEverything");
   sectionForBooks.innerHTML = "";
   fetch(myUrlBooks)
     .then((response) => response.json())
     .then((books) => {
-      if (path === ROUTES.COMP) {
-        const booksComp = books.filter(
-          (book) => book.categoryServer === "comp"
-        );
+      if (path === routes.comp) {
+        const booksComp = books.filter((book) => book.categoryData === "comp");
         getBooks(booksComp);
-      }
-      if (path === ROUTES.SCIENCE) {
+      } else if (path === routes.science) {
         const booksScience = books.filter(
-          (book) => book.categoryServer === "science"
+          (book) => book.categoryData === "science"
         );
         getBooks(booksScience);
-      }
-      if (path === ROUTES.HOME) {
+      } else if (path === routes.home) {
         const allBooks = books;
         getBooks(allBooks);
+      } else {
+        let h1 = document.createElement("h1");
+        h1.innerText = "PAGE NOT FOUND 404";
+        sectionForBooks.appendChild(h1);
+        h1.style.color = "black";
       }
     });
 };

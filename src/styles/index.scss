@@ -76,6 +76,9 @@ body {
 .section {
   width: 80%;
 }
+.section_books {
+  min-height: 80vh;
+}
 .change_delete {
   background-color: rgb(165, 42, 42);
   display: flex;
