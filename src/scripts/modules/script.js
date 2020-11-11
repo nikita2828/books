@@ -40,8 +40,7 @@ addBookBtn.addEventListener("click", () => {
   editBtn.style.display = "none";
 });
 
-cancelBtn.addEventListener("click", () => closeModal());
-
+console.log(cancelBtn);
 window.addEventListener("click", (e) => {
   if (e.target === modalWindow) {
     closeModal();
@@ -49,6 +48,7 @@ window.addEventListener("click", (e) => {
 });
 
 const closeModal = () => {
+  console.log("close modal");
   modalWindow.style.display = "none";
   modalWindowDescription.nextElementSibling.style.display = "none";
   modalWindowDescription.style.outline = "";
@@ -56,14 +56,16 @@ const closeModal = () => {
   modalWindowItems.forEach((item) => {
     item.value = "";
   });
+
   listForPostRequest.forEach((i) => {
     i.nextElementSibling.style.display = "none";
     i.style.outline = "";
   });
 };
+cancelBtn.addEventListener("click", closeModal);
 
 //RENDER BOOKS
-function renderBooks(myUrl) {
+const renderBooks = (myUrl) => {
   myUrl.forEach((oneBook) => {
     const book = document.createElement("div");
     book.classList.add("section_for_one_book");
@@ -82,7 +84,16 @@ function renderBooks(myUrl) {
 
     bookImg.setAttribute("src", oneBook.imgData);
     bookName.innerHTML = `<b>Название: </b> ${oneBook.nameData}`;
+
+    const authors = [
+      { id: 1, name: "Vasya" },
+      { id: 2, name: "Petya" },
+    ];
+    const currentAuthor = authors.find(
+      (author) => author.id === oneBook.authorData
+    );
     bookAuthor.innerHTML = `<b>Автор: </b>${oneBook.authorData}`;
+
     bookCategory.innerHTML = `<b>Категрия: </b>${oneBook.categoryData}`;
     bookPages.innerHTML = `<b>Количество страниц: </b>${oneBook.pagesData}`;
     bookSize.innerHTML = `<b>Размер: </b>${oneBook.sizeData}`;
@@ -116,15 +127,15 @@ function renderBooks(myUrl) {
     sectionForBooks.appendChild(book);
     console.log("---------------getRequest end");
   });
-}
+};
 
 //POST REQUEST
-function createBook() {
+const createBook = () => {
   const bookData = {
     imgData: modalWindowImg.value,
     nameData: modalWindowName.value,
-    authorData: modalWindowAuthor.value,
-    categoryData: modalWindowCategory.value,
+    authorData: +modalWindowAuthor.value,
+    categoryData: +modalWindowCategory.value,
     pagesData: +modalWindowPages.value,
     sizeData: modalWindowSize.value,
     qualityData: modalWindowQuality.value,
@@ -142,17 +153,17 @@ function createBook() {
     .then(closeModal)
     .then(console.log("--------createBook"))
     .then(getBooks(location.pathname));
-}
+};
 
 //DELETE REQUEST
-function deleteBook(id) {
+const deleteBook = (id) => {
   fetch(`${myUrlBooks}/${id}`, {
     method: "DELETE",
   }).then(getBooks(location.pathname));
-}
+};
 
 //CHANGE REQUEST
-function changeBook(oneBook) {
+const changeBook = (oneBook) => {
   book = oneBook;
   modalWindow.style.display = "block";
   createBtn.style.display = "none";
@@ -168,11 +179,11 @@ function changeBook(oneBook) {
   modalWindowYear.value = oneBook.yearData;
   modalWindowImg.value = oneBook.imgData;
   modalWindowDescription.value = oneBook.descriptionData;
-}
+};
 
-editBtn.addEventListener("click", () => putRequest());
+editBtn.addEventListener("click", putRequest);
 
-function putRequest() {
+const putRequest = () => {
   let id = book.id;
   const bookData = {
     imgData: modalWindowImg.value,
@@ -195,18 +206,19 @@ function putRequest() {
   })
     .then(closeModal)
     .then(getBooks(location.pathname));
-}
+};
 
 //VALIDATION
 
 createBtn.addEventListener("click", () => {
-  listForPostRequest.forEach((items) => {
-    if (!items.value) {
-      items.style.outline = "1px solid yellow";
-      items.nextElementSibling.style.display = "block";
-    } else if (items.value) {
-      items.style.outline = "1px solid green";
-      items.nextElementSibling.style.display = "none";
+  listForPostRequest.forEach((item) => {
+    const errorNode = item.parentNode.querySelector(".modal_window_warning");
+    if (!item.value) {
+      item.style.outline = "1px solid yellow";
+      errorNode.style.display = "block";
+    } else if (item.value) {
+      item.style.outline = "1px solid green";
+      errorNode.style.display = "none";
     }
   });
 
@@ -265,33 +277,35 @@ search.addEventListener("keyup", () => {
 });
 
 //GET REQUST FOR CATEGORY
-function getCategorys() {
+const getCategorys = () => {
   fetch(myUrlCategory)
     .then((response) => response.json())
     .then((categorys) => {
       categorys.forEach((category) => {
         const selectForCategory = document.querySelector(".category_select");
-        let optionForCategory = document.createElement("option");
+        const optionForCategory = document.createElement("option");
         optionForCategory.innerText = `${category.nameCategory}`;
+        optionForCategory.setAttribute("value", `${category.id}`);
         selectForCategory.appendChild(optionForCategory);
       });
     });
-}
+};
 getCategorys();
 
 //GET REQUST FOR AUTHORS
-function getAuthors() {
+const getAuthors = () => {
   fetch(myUrlAuthors)
     .then((response) => response.json())
     .then((authors) => {
       authors.forEach((author) => {
         const select = document.querySelector(".author_select");
-        let option = document.createElement("option");
+        const option = document.createElement("option");
+        option.setAttribute("value", `${author.id}`);
         option.innerText = `${author.nameAuthor}`;
         select.appendChild(option);
       });
     });
-}
+};
 getAuthors();
 
 //HISTORY API
@@ -320,12 +334,10 @@ const getBooks = (path) => {
     .then((response) => response.json())
     .then((books) => {
       if (path === routes.comp) {
-        const booksComp = books.filter((book) => book.categoryData === "comp");
+        const booksComp = books.filter((book) => book.categoryData === 1);
         renderBooks(booksComp);
       } else if (path === routes.science) {
-        const booksScience = books.filter(
-          (book) => book.categoryData === "science"
-        );
+        const booksScience = books.filter((book) => book.categoryData === 2);
         renderBooks(booksScience);
       } else if (path === routes.home) {
         const allBooks = books;
