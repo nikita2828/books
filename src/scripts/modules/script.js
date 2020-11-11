@@ -9,42 +9,30 @@ let modalWindow = document.querySelector(".modal_window_background");
 let sectionForBooks = document.querySelector(".section_books");
 let search = document.querySelector(".search");
 
-let modalWindowName = document.querySelector("#modal_input_name");
-let modalWindowAuthor = document.querySelector("#modal_select_author");
-let modalWindowCategory = document.querySelector("#modal_select_category");
-let modalWindowPages = document.querySelector("#modal_input_pages");
-let modalWindowSize = document.querySelector("#modal_input_size");
-let modalWindowQuality = document.querySelector("#modal_input_quality");
-let modalWindowLanguage = document.querySelector("#modal_input_language");
-let modalWindowYear = document.querySelector("#modal_input_year");
-let modalWindowImg = document.querySelector("#modal_input_img");
-let modalWindowDescription = document.querySelector(
+const modalWindowName = document.querySelector("#modal_input_name");
+const modalWindowAuthor = document.querySelector("#modal_select_author");
+const modalWindowCategory = document.querySelector("#modal_select_category");
+const modalWindowPages = document.querySelector("#modal_input_pages");
+const modalWindowSize = document.querySelector("#modal_input_size");
+const modalWindowQuality = document.querySelector("#modal_input_quality");
+const modalWindowLanguage = document.querySelector("#modal_input_language");
+const modalWindowYear = document.querySelector("#modal_input_year");
+const modalWindowImg = document.querySelector("#modal_input_img");
+const modalWindowDescription = document.querySelector(
   "#modal_window_description"
 );
 
-let createBtn = document.querySelector(".create_btn");
-let editBtn = document.querySelector(".edit_btn");
-let modalWindowItems = document.querySelectorAll(".modal_window_items");
-let listOfFieldsCreateBook = [
+const createBtn = document.querySelector(".create_btn");
+const editBtn = document.querySelector(".edit_btn");
+const modalWindowItems = document.querySelectorAll(".modal_window_items");
+const listForPostRequest = [
   modalWindowName,
   modalWindowAuthor,
   modalWindowCategory,
-  modalWindowPages,
-  modalWindowSize,
-  modalWindowQuality,
-  modalWindowLanguage,
-  modalWindowYear,
-  modalWindowImg,
-];
-let listForPostRequest = [
-  modalWindowName,
-  modalWindowAuthor,
-  modalWindowCategory,
-  modalWindowDescription,
   modalWindowImg,
 ];
 
-let bookId = null;
+let book = null;
 
 addBookBtn.addEventListener("click", () => {
   modalWindow.style.display = "block";
@@ -62,30 +50,35 @@ window.addEventListener("click", (e) => {
 
 const closeModal = () => {
   modalWindow.style.display = "none";
+  modalWindowDescription.nextElementSibling.style.display = "none";
+  modalWindowDescription.style.outline = "";
+
   modalWindowItems.forEach((item) => {
     item.value = "";
-    item.style.outline = "";
-    item.nextElementSibling.style.display = "none";
+  });
+  listForPostRequest.forEach((i) => {
+    i.nextElementSibling.style.display = "none";
+    i.style.outline = "";
   });
 };
 
-//GET REQUEST
-function getBooks(myUrl) {
+//RENDER BOOKS
+function renderBooks(myUrl) {
   myUrl.forEach((oneBook) => {
     const book = document.createElement("div");
     book.classList.add("section_for_one_book");
     book.innerHTML = templateBook;
 
-    let bookImg = book.querySelector(".img_item");
-    let bookName = book.querySelector(".name_item");
-    let bookAuthor = book.querySelector(".author_item");
-    let bookCategory = book.querySelector(".category_item");
-    let bookPages = book.querySelector(".pages_item");
-    let bookSize = book.querySelector(".size_item");
-    let bookQuality = book.querySelector(".quality_item");
-    let bookLanguage = book.querySelector(".language_item");
-    let bookYear = book.querySelector(".year_item");
-    let bookDescription = book.querySelector(".description_item");
+    const bookImg = book.querySelector(".img_item");
+    const bookName = book.querySelector(".name_item");
+    const bookAuthor = book.querySelector(".author_item");
+    const bookCategory = book.querySelector(".category_item");
+    const bookPages = book.querySelector(".pages_item");
+    const bookSize = book.querySelector(".size_item");
+    const bookQuality = book.querySelector(".quality_item");
+    const bookLanguage = book.querySelector(".language_item");
+    const bookYear = book.querySelector(".year_item");
+    const bookDescription = book.querySelector(".description_item");
 
     bookImg.setAttribute("src", oneBook.imgData);
     bookName.innerHTML = `<b>Название: </b> ${oneBook.nameData}`;
@@ -114,10 +107,10 @@ function getBooks(myUrl) {
       bookYear.remove();
     }
 
-    let changeBtn = book.querySelector(".change");
+    const changeBtn = book.querySelector(".change");
     changeBtn.addEventListener("click", () => changeBook(oneBook));
 
-    let deleteBtn = book.querySelector(".delete");
+    const deleteBtn = book.querySelector(".delete");
     deleteBtn.addEventListener("click", () => deleteBook(oneBook.id));
 
     sectionForBooks.appendChild(book);
@@ -126,8 +119,8 @@ function getBooks(myUrl) {
 }
 
 //POST REQUEST
-function postBook() {
-  let post = {
+function createBook() {
+  const bookData = {
     imgData: modalWindowImg.value,
     nameData: modalWindowName.value,
     authorData: modalWindowAuthor.value,
@@ -141,26 +134,26 @@ function postBook() {
   };
   fetch(myUrlBooks, {
     method: "POST",
-    body: JSON.stringify(post),
+    body: JSON.stringify(bookData),
     headers: {
       "Content-Type": "application/json",
     },
   })
     .then(closeModal)
-    .then(console.log("--------postBook"))
-    .then(getEverything(location.pathname));
+    .then(console.log("--------createBook"))
+    .then(getBooks(location.pathname));
 }
 
 //DELETE REQUEST
 function deleteBook(id) {
   fetch(`${myUrlBooks}/${id}`, {
     method: "DELETE",
-  }).then(getEverything(location.pathname));
+  }).then(getBooks(location.pathname));
 }
 
 //CHANGE REQUEST
 function changeBook(oneBook) {
-  bookId = oneBook;
+  book = oneBook;
   modalWindow.style.display = "block";
   createBtn.style.display = "none";
   editBtn.style.display = "block";
@@ -177,11 +170,11 @@ function changeBook(oneBook) {
   modalWindowDescription.value = oneBook.descriptionData;
 }
 
-editBtn.addEventListener("click", () => put());
+editBtn.addEventListener("click", () => putRequest());
 
-function put() {
-  let id = bookId;
-  let post = {
+function putRequest() {
+  let id = book.id;
+  const bookData = {
     imgData: modalWindowImg.value,
     nameData: modalWindowName.value,
     authorData: modalWindowAuthor.value,
@@ -193,21 +186,21 @@ function put() {
     yearData: +modalWindowYear.value,
     descriptionData: modalWindowDescription.value,
   };
-  fetch(`${myUrlBooks}/${id.id}`, {
+  fetch(`${myUrlBooks}/${id}`, {
     method: "PUT",
-    body: JSON.stringify(post),
+    body: JSON.stringify(bookData),
     headers: {
       "Content-Type": "application/json",
     },
   })
     .then(closeModal)
-    .then(getEverything(location.pathname));
+    .then(getBooks(location.pathname));
 }
 
 //VALIDATION
 
 createBtn.addEventListener("click", () => {
-  listOfFieldsCreateBook.forEach((items) => {
+  listForPostRequest.forEach((items) => {
     if (!items.value) {
       items.style.outline = "1px solid yellow";
       items.nextElementSibling.style.display = "block";
@@ -221,15 +214,13 @@ createBtn.addEventListener("click", () => {
 
   if (modalWindowDescription.value.length >= 10 && isEmpty) {
     console.log("-----validation");
-    postBook();
+    createBook();
   }
   if (modalWindowDescription.value.length < 10) {
     modalWindowDescription.style.outline = "1px solid yellow";
-
     modalWindowDescription.nextElementSibling.style.display = "block";
   } else {
     modalWindowDescription.style.outline = "1px solid green";
-
     modalWindowDescription.nextElementSibling.style.display = "none";
   }
 });
@@ -244,7 +235,7 @@ modalWindowDescription.addEventListener("blur", () => {
   }
 });
 
-listOfFieldsCreateBook.forEach((el) => {
+listForPostRequest.forEach((el) => {
   el.addEventListener("blur", () => {
     if (!el.value) {
       el.style.outline = "1px solid yellow";
@@ -310,35 +301,35 @@ link.forEach((link) => {
     e.preventDefault();
     const href = e.target.getAttribute("href");
     history.pushState(null, "", href);
-    getEverything(href);
+    getBooks(href);
   });
 });
 
 window.addEventListener("popstate", () => {
-  getEverything(location.pathname);
+  getBooks(location.pathname);
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  getEverything(location.pathname);
+  getBooks(location.pathname);
 });
 
-const getEverything = (path) => {
-  console.log("-----------getEverything");
+const getBooks = (path) => {
+  console.log("-----------getBooks");
   sectionForBooks.innerHTML = "";
   fetch(myUrlBooks)
     .then((response) => response.json())
     .then((books) => {
       if (path === routes.comp) {
         const booksComp = books.filter((book) => book.categoryData === "comp");
-        getBooks(booksComp);
+        renderBooks(booksComp);
       } else if (path === routes.science) {
         const booksScience = books.filter(
           (book) => book.categoryData === "science"
         );
-        getBooks(booksScience);
+        renderBooks(booksScience);
       } else if (path === routes.home) {
         const allBooks = books;
-        getBooks(allBooks);
+        renderBooks(allBooks);
       } else {
         let h1 = document.createElement("h1");
         h1.innerText = "PAGE NOT FOUND 404";
