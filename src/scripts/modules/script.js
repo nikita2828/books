@@ -40,7 +40,6 @@ addBookBtn.addEventListener("click", () => {
   editBtn.style.display = "none";
 });
 
-console.log(cancelBtn);
 window.addEventListener("click", (e) => {
   if (e.target === modalWindow) {
     closeModal();
@@ -50,15 +49,15 @@ window.addEventListener("click", (e) => {
 const closeModal = () => {
   console.log("close modal");
   modalWindow.style.display = "none";
-  modalWindowDescription.nextElementSibling.style.display = "none";
+  modalWindowDescription.parentNode.querySelector(
+    ".modal_window_warning"
+  ).style.display = "none";
   modalWindowDescription.style.outline = "";
-
   modalWindowItems.forEach((item) => {
     item.value = "";
   });
-
   listForPostRequest.forEach((i) => {
-    i.nextElementSibling.style.display = "none";
+    i.parentNode.querySelector(".modal_window_warning").style.display = "none";
     i.style.outline = "";
   });
 };
@@ -209,7 +208,6 @@ const putRequest = () => {
 };
 
 //VALIDATION
-
 createBtn.addEventListener("click", () => {
   listForPostRequest.forEach((item) => {
     const errorNode = item.parentNode.querySelector(".modal_window_warning");
@@ -221,29 +219,35 @@ createBtn.addEventListener("click", () => {
       errorNode.style.display = "none";
     }
   });
-
   const isEmpty = listForPostRequest.every((input) => input.value);
-
   if (modalWindowDescription.value.length >= 10 && isEmpty) {
     console.log("-----validation");
     createBook();
   }
   if (modalWindowDescription.value.length < 10) {
     modalWindowDescription.style.outline = "1px solid yellow";
-    modalWindowDescription.nextElementSibling.style.display = "block";
+    modalWindowDescription.parentNode.querySelector(
+      ".modal_window_warning"
+    ).style.display = "block";
   } else {
     modalWindowDescription.style.outline = "1px solid green";
-    modalWindowDescription.nextElementSibling.style.display = "none";
+    modalWindowDescription.parentNode.querySelector(
+      ".modal_window_warning"
+    ).style.display = "none";
   }
 });
 
 modalWindowDescription.addEventListener("blur", () => {
   if (modalWindowDescription.value.length < 10) {
     modalWindowDescription.style.outline = "1px solid yellow";
-    modalWindowDescription.nextElementSibling.style.display = "block";
+    modalWindowDescription.parentNode.querySelector(
+      ".modal_window_warning"
+    ).style.display = "block";
   } else {
     modalWindowDescription.style.outline = "1px solid green";
-    modalWindowDescription.nextElementSibling.style.display = "none";
+    modalWindowDescription.parentNode.querySelector(
+      ".modal_window_warning"
+    ).style.display = "none";
   }
 });
 
