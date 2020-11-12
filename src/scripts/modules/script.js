@@ -5,7 +5,8 @@ const myUrlCategory = "http://localhost:2828/categories";
 const myUrlBooks = "http://localhost:2828/books";
 let addBookBtn = document.querySelector(".add_book_btn");
 let cancelBtn = document.querySelector(".cancel_btn");
-let modalWindow = document.querySelector(".modal_window_background");
+let modalWindowBackground = document.querySelector(".modal_window_background");
+let modalWindow = document.querySelector(".modal_window");
 let sectionForBooks = document.querySelector(".section_books");
 let search = document.querySelector(".search");
 
@@ -35,19 +36,20 @@ const listForPostRequest = [
 let book = null;
 
 addBookBtn.addEventListener("click", () => {
+  modalWindowBackground.style.display = "block";
   modalWindow.style.display = "block";
   createBtn.style.display = "block";
   editBtn.style.display = "none";
 });
 
-window.addEventListener("click", (e) => {
-  if (e.target === modalWindow) {
+modalWindowBackground.addEventListener("click", (e) => {
+  if (e.target === modalWindowBackground) {
     closeModal();
   }
 });
 
 const closeModal = () => {
-  console.log("close modal");
+  modalWindowBackground.style.display = "none";
   modalWindow.style.display = "none";
   modalWindowDescription.parentNode.querySelector(
     ".modal_window_warning"
@@ -64,7 +66,9 @@ const closeModal = () => {
 cancelBtn.addEventListener("click", closeModal);
 
 //RENDER BOOKS
-const renderBooks = (myUrl) => {
+const renderBooks = async (myUrl) => {
+  const authors = await getAuthors();
+  console.log(authors);
   myUrl.forEach((oneBook) => {
     const book = document.createElement("div");
     book.classList.add("section_for_one_book");
@@ -84,14 +88,9 @@ const renderBooks = (myUrl) => {
     bookImg.setAttribute("src", oneBook.imgData);
     bookName.innerHTML = `<b>Название: </b> ${oneBook.nameData}`;
 
-    const authors = [
-      { id: 1, name: "Vasya" },
-      { id: 2, name: "Petya" },
-    ];
-    const currentAuthor = authors.find(
-      (author) => author.id === oneBook.authorData
-    );
-    bookAuthor.innerHTML = `<b>Автор: </b>${oneBook.authorData}`;
+    bookAuthor.innerHTML = `<b>Автор: </b>${
+      authors.find((author) => author.id === oneBook.authorData).nameAuthor
+    }`;
 
     bookCategory.innerHTML = `<b>Категрия: </b>${oneBook.categoryData}`;
     bookPages.innerHTML = `<b>Количество страниц: </b>${oneBook.pagesData}`;
@@ -164,6 +163,7 @@ const deleteBook = (id) => {
 //CHANGE REQUEST
 const changeBook = (oneBook) => {
   book = oneBook;
+  modalWindowBackground.style.display = "block";
   modalWindow.style.display = "block";
   createBtn.style.display = "none";
   editBtn.style.display = "block";
@@ -285,32 +285,44 @@ const getCategorys = () => {
   fetch(myUrlCategory)
     .then((response) => response.json())
     .then((categorys) => {
-      categorys.forEach((category) => {
-        const selectForCategory = document.querySelector(".category_select");
-        const optionForCategory = document.createElement("option");
-        optionForCategory.innerText = `${category.nameCategory}`;
-        optionForCategory.setAttribute("value", `${category.id}`);
-        selectForCategory.appendChild(optionForCategory);
-      });
+      const categorysForRender = categorys;
+      renderCategorys(categorysForRender);
     });
 };
 getCategorys();
 
+const renderCategorys = (catRen) => {
+  catRen.forEach((category) => {
+    const selectForCategory = document.querySelector(".category_select");
+    const optionForCategory = document.createElement("option");
+    optionForCategory.innerText = `${category.nameCategory}`;
+    optionForCategory.setAttribute("value", `${category.id}`);
+    selectForCategory.appendChild(optionForCategory);
+  });
+};
+
 //GET REQUST FOR AUTHORS
-const getAuthors = () => {
-  fetch(myUrlAuthors)
-    .then((response) => response.json())
-    .then((authors) => {
-      authors.forEach((author) => {
-        const select = document.querySelector(".author_select");
-        const option = document.createElement("option");
-        option.setAttribute("value", `${author.id}`);
-        option.innerText = `${author.nameAuthor}`;
-        select.appendChild(option);
-      });
-    });
+const getAuthors = async () => {
+  try {
+    const authorsForRender = await fetch(myUrlAuthors).then((res) =>
+      res.json()
+    );
+    renderAuthors(authorsForRender);
+    return authorsForRender;
+  } catch (error) {
+    console.warm(error);
+  }
 };
 getAuthors();
+const renderAuthors = (autRen) => {
+  autRen.forEach((author) => {
+    const select = document.querySelector(".author_select");
+    const option = document.createElement("option");
+    option.setAttribute("value", `${author.id}`);
+    option.innerText = `${author.nameAuthor}`;
+    select.appendChild(option);
+  });
+};
 
 //HISTORY API
 const link = document.querySelectorAll(".a");

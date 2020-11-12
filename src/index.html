@@ -61,112 +61,111 @@
           </section>
         </div>
       </div>
-      <div class="modal_window_background">
-        <div class="modal_window">
-          <h1>Введите информацию про книгу</h1>
-          <hr />
-          <div class="modal_window_item">
-            <label for="name"
-              >Введите имя<br /><input
-                placeholder="Введите имя"
-                type="text"
-                id="modal_input_name"
-                class="modal_window_items"
-              />
-              <div class="modal_window_warning">Вы не ввели имя</div></label
-            >
-            <label for="author"
-              >Выберите автора <br />
-              <select
-                name="author"
-                id="modal_select_author"
-                class="author_select"
-              >
-                <option value="" selected></option>
-              </select>
-              <div class="modal_window_warning">Вы не выбрали автора</div>
-            </label>
-            <label for="category"
-              >Выберите автора <br />
-              <select
-                name="category"
-                id="modal_select_category"
-                class="category_select"
-              >
-                <option value="" selected></option>
-              </select>
-              <div class="modal_window_warning">Вы не выбрали категорию</div>
-            </label>
-            <label for="pages"
-              >Введите количество страниц<br /><input
-                placeholder="Введите количество страниц"
-                type="number"
-                id="modal_input_pages"
-                class="modal_window_items"
-              />
-            </label>
-
-            <label for="size"
-              >Введите размер файла<br /><input
-                placeholder="Введите размер фаила"
-                type="text"
-                id="modal_input_size"
-                class="modal_window_items"
-              />
-            </label>
-
-            <label for="quality"
-              >Введите качество<br /><input
-                placeholder="Введите качество"
-                type="text"
-                id="modal_input_quality"
-                class="modal_window_items"
-              />
-            </label>
-
-            <label for="language"
-              >Введите язык<br /><input
-                placeholder="Введите язык"
-                type="text"
-                id="modal_input_language"
-                class="modal_window_items"
-              />
-            </label>
-
-            <label for="year"
-              >Введите год<br /><input
-                placeholder="Введите год"
-                type="number"
-                id="modal_input_year"
-                class="modal_window_items"
-              />
-            </label>
-
-            <label for="img"
-              >Добавте обложку<br /><input
-                placeholder="Добавте обложку"
-                type="url"
-                id="modal_input_img"
-                class="modal_window_items"
-              />
-              <div class="modal_window_warning">Вы не ввели обложку</div></label
-            >
-          </div>
-          <div>
-            <textarea
-              name="modal_window_description"
-              id="modal_window_description"
+      <div class="modal_window_background"></div>
+      <div class="modal_window">
+        <h1>Введите информацию про книгу</h1>
+        <hr />
+        <div class="modal_window_item">
+          <label for="name"
+            >Введите имя<br /><input
+              placeholder="Введите имя"
+              type="text"
+              id="modal_input_name"
               class="modal_window_items"
-            ></textarea>
-            <div class="modal_window_warning">
-              В описание должно быть минимум 10 символов
-            </div>
+            />
+            <div class="modal_window_warning">Вы не ввели имя</div></label
+          >
+          <label for="author"
+            >Выберите автора <br />
+            <select
+              name="author"
+              id="modal_select_author"
+              class="author_select modal_window_items"
+            >
+              <option value="" selected></option>
+            </select>
+            <div class="modal_window_warning">Вы не выбрали автора</div>
+          </label>
+          <label for="category"
+            >Выберите автора <br />
+            <select
+              name="category"
+              id="modal_select_category"
+              class="category_select modal_window_items"
+            >
+              <option value="" selected></option>
+            </select>
+            <div class="modal_window_warning">Вы не выбрали категорию</div>
+          </label>
+          <label for="pages"
+            >Введите количество страниц<br /><input
+              placeholder="Введите количество страниц"
+              type="number"
+              id="modal_input_pages"
+              class="modal_window_items"
+            />
+          </label>
+
+          <label for="size"
+            >Введите размер файла<br /><input
+              placeholder="Введите размер фаила"
+              type="text"
+              id="modal_input_size"
+              class="modal_window_items"
+            />
+          </label>
+
+          <label for="quality"
+            >Введите качество<br /><input
+              placeholder="Введите качество"
+              type="text"
+              id="modal_input_quality"
+              class="modal_window_items"
+            />
+          </label>
+
+          <label for="language"
+            >Введите язык<br /><input
+              placeholder="Введите язык"
+              type="text"
+              id="modal_input_language"
+              class="modal_window_items"
+            />
+          </label>
+
+          <label for="year"
+            >Введите год<br /><input
+              placeholder="Введите год"
+              type="number"
+              id="modal_input_year"
+              class="modal_window_items"
+            />
+          </label>
+
+          <label for="img"
+            >Добавте обложку<br /><input
+              placeholder="Добавте обложку"
+              type="url"
+              id="modal_input_img"
+              class="modal_window_items"
+            />
+            <div class="modal_window_warning">Вы не ввели обложку</div></label
+          >
+        </div>
+        <div>
+          <textarea
+            name="modal_window_description"
+            id="modal_window_description"
+            class="modal_window_items"
+          ></textarea>
+          <div class="modal_window_warning">
+            В описание должно быть минимум 10 символов
           </div>
-          <div class="modal_window_btn">
-            <button class="section_btn edit_btn">Редактировать</button>
-            <button class="section_btn create_btn">Создать</button>
-            <button class="section_btn cancel_btn">Отмена</button>
-          </div>
+        </div>
+        <div class="modal_window_btn">
+          <button class="section_btn edit_btn">Редактировать</button>
+          <button class="section_btn create_btn">Создать</button>
+          <button class="section_btn cancel_btn">Отмена</button>
         </div>
       </div>
     </div>
