@@ -68,7 +68,7 @@ cancelBtn.addEventListener("click", closeModal);
 //RENDER BOOKS
 const renderBooks = async (myUrl) => {
   const authors = await getAuthors();
-  console.log(authors);
+  const categorys = await getCategorys();
   myUrl.forEach((oneBook) => {
     const book = document.createElement("div");
     book.classList.add("section_for_one_book");
@@ -87,12 +87,13 @@ const renderBooks = async (myUrl) => {
 
     bookImg.setAttribute("src", oneBook.imgData);
     bookName.innerHTML = `<b>Название: </b> ${oneBook.nameData}`;
-
     bookAuthor.innerHTML = `<b>Автор: </b>${
       authors.find((author) => author.id === oneBook.authorData).nameAuthor
     }`;
-
-    bookCategory.innerHTML = `<b>Категрия: </b>${oneBook.categoryData}`;
+    bookCategory.innerHTML = `<b>Категрия: </b>${
+      categorys.find((category) => category.id === oneBook.categoryData)
+        .nameCategory
+    }`;
     bookPages.innerHTML = `<b>Количество страниц: </b>${oneBook.pagesData}`;
     bookSize.innerHTML = `<b>Размер: </b>${oneBook.sizeData}`;
     bookQuality.innerHTML = `<b>Качество: </b>${oneBook.qualityData}`;
@@ -281,13 +282,16 @@ search.addEventListener("keyup", () => {
 });
 
 //GET REQUST FOR CATEGORY
-const getCategorys = () => {
-  fetch(myUrlCategory)
-    .then((response) => response.json())
-    .then((categorys) => {
-      const categorysForRender = categorys;
-      renderCategorys(categorysForRender);
-    });
+const getCategorys = async () => {
+  try {
+    const categorysForRender = await fetch(myUrlCategory).then((res) =>
+      res.json()
+    );
+    renderCategorys(categorysForRender);
+    return categorysForRender;
+  } catch (error) {
+    console.warn(error);
+  }
 };
 getCategorys();
 
