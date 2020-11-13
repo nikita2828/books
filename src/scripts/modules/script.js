@@ -171,25 +171,22 @@ const changeBook = (oneBook) => {
 
   modalWindowName.value = oneBook.nameData;
   modalWindowAuthor.value = oneBook.authorData;
+  modalWindowCategory.value = oneBook.categoryData;
   modalWindowPages.value = oneBook.pagesData;
   modalWindowSize.value = oneBook.sizeData;
   modalWindowQuality.value = oneBook.qualityData;
   modalWindowLanguage.value = oneBook.languageData;
-
   modalWindowYear.value = oneBook.yearData;
   modalWindowImg.value = oneBook.imgData;
   modalWindowDescription.value = oneBook.descriptionData;
 };
-
-editBtn.addEventListener("click", putRequest);
-
 const putRequest = () => {
   let id = book.id;
   const bookData = {
     imgData: modalWindowImg.value,
     nameData: modalWindowName.value,
-    authorData: modalWindowAuthor.value,
-    categoryData: modalWindowCategory.value,
+    authorData: +modalWindowAuthor.value,
+    categoryData: +modalWindowCategory.value,
     pagesData: +modalWindowPages.value,
     sizeData: modalWindowSize.value,
     qualityData: modalWindowQuality.value,
@@ -205,8 +202,10 @@ const putRequest = () => {
     },
   })
     .then(closeModal)
+    .then(console.log("--------------------put"))
     .then(getBooks(location.pathname));
 };
+editBtn.addEventListener("click", putRequest);
 
 //VALIDATION
 createBtn.addEventListener("click", () => {
@@ -287,16 +286,15 @@ const getCategorys = async () => {
     const categorysForRender = await fetch(myUrlCategory).then((res) =>
       res.json()
     );
-    renderCategorys(categorysForRender);
     return categorysForRender;
   } catch (error) {
     console.warn(error);
   }
 };
-getCategorys();
 
-const renderCategorys = (catRen) => {
-  catRen.forEach((category) => {
+const renderCategorys = async () => {
+  const categorys = await getCategorys();
+  categorys.forEach((category) => {
     const selectForCategory = document.querySelector(".category_select");
     const optionForCategory = document.createElement("option");
     optionForCategory.innerText = `${category.nameCategory}`;
@@ -304,6 +302,7 @@ const renderCategorys = (catRen) => {
     selectForCategory.appendChild(optionForCategory);
   });
 };
+renderCategorys();
 
 //GET REQUST FOR AUTHORS
 const getAuthors = async () => {
@@ -311,15 +310,14 @@ const getAuthors = async () => {
     const authorsForRender = await fetch(myUrlAuthors).then((res) =>
       res.json()
     );
-    renderAuthors(authorsForRender);
     return authorsForRender;
   } catch (error) {
     console.warm(error);
   }
 };
-getAuthors();
-const renderAuthors = (autRen) => {
-  autRen.forEach((author) => {
+const renderAuthors = async () => {
+  const authors = await getAuthors();
+  authors.forEach((author) => {
     const select = document.querySelector(".author_select");
     const option = document.createElement("option");
     option.setAttribute("value", `${author.id}`);
@@ -327,7 +325,7 @@ const renderAuthors = (autRen) => {
     select.appendChild(option);
   });
 };
-
+renderAuthors();
 //HISTORY API
 const link = document.querySelectorAll(".a");
 link.forEach((link) => {
