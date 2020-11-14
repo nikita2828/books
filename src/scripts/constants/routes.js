@@ -1,5 +1,5 @@
-export const ROUTES = {
-  HOME: "/home",
-  COMP: "/comp",
-  SCIENCE: "/science",
+export const routes = {
+  home: "/",
+  comp: "/comp",
+  science: "/science",
 };

@@ -76,6 +76,9 @@ body {
 .section {
   width: 80%;
 }
+.section_books {
+  min-height: 80vh;
+}
 .change_delete {
   background-color: rgb(165, 42, 42);
   display: flex;
@@ -131,6 +134,7 @@ body {
 }
 
 .modal_window {
+  display: none;
   width: 500px;
   background-color: rgb(165, 42, 42);
   position: absolute;
@@ -164,7 +168,7 @@ h1 {
   padding-left: 5px;
 }
 #modal_window_description {
-  width: 98%;
+  width: 97%;
   height: 50px;
   margin-left: 3px;
 }
