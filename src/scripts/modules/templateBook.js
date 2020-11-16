@@ -8,7 +8,7 @@ export const templateBook = `
   src=""
   width="200px"
 />
-<p class="section_item name_item"></p>
+<a href="" class="section_item name_item link"></a>
 <p class="section_item author_item"></p>
 <p class="section_item category_item"></p>
 <p class="section_item pages_item"></p>

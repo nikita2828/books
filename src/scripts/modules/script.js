@@ -70,6 +70,9 @@ const renderBooks = async (myUrl) => {
   const authors = await getAuthors();
   const categorys = await getCategorys();
   myUrl.forEach((oneBook) => {
+    // console.log(`location.pathname/${oneBook.id}`);
+    // if (`location.pathname/${oneBook.id}`) {
+    // }
     const book = document.createElement("div");
     book.classList.add("section_for_one_book");
     book.innerHTML = templateBook;
@@ -85,8 +88,22 @@ const renderBooks = async (myUrl) => {
     const bookYear = book.querySelector(".year_item");
     const bookDescription = book.querySelector(".description_item");
 
+    const categoryName = categorys.find(
+      (category) => category.id === oneBook.categoryData
+    ).nameCategory;
+
     bookImg.setAttribute("src", oneBook.imgData);
     bookName.innerHTML = `<b>Название: </b> ${oneBook.nameData}`;
+
+    bookName.forEach((link) => {
+      link.addEventListener("click", (e) => {
+        bookName.setAttribute("href", `/${categoryName}/${oneBook.id}`);
+        e.preventDefault();
+        // const href = e.target.getAttribute("href");
+        // history.pushState(null, "", href);
+        // getBooks(href);
+      });
+    });
     bookAuthor.innerHTML = `<b>Автор: </b>${
       authors.find((author) => author.id === oneBook.authorData).nameAuthor
     }`;
@@ -326,23 +343,25 @@ const renderAuthors = async () => {
   });
 };
 renderAuthors();
-//HISTORY API
-const link = document.querySelectorAll(".a");
-link.forEach((link) => {
-  link.addEventListener("click", (e) => {
-    e.preventDefault();
-    const href = e.target.getAttribute("href");
-    history.pushState(null, "", href);
-    getBooks(href);
-  });
-});
 
-window.addEventListener("popstate", () => {
-  getBooks(location.pathname);
-});
+//HISTORY API
 
 document.addEventListener("DOMContentLoaded", () => {
   getBooks(location.pathname);
+
+  const link = document.querySelectorAll(".link");
+  link.forEach((link) => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      const href = e.target.getAttribute("href");
+      history.pushState(null, "", href);
+      getBooks(href);
+    });
+  });
+
+  window.addEventListener("popstate", () => {
+    getBooks(location.pathname);
+  });
 });
 
 const getBooks = (path) => {
