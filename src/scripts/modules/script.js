@@ -1,4 +1,5 @@
 import { templateBook } from "./templateBook";
+import { templateSingleBook } from "./templateSingleBook";
 import { routes } from "../constants/routes";
 const myUrlAuthors = "http://localhost:2828/authors";
 const myUrlCategory = "http://localhost:2828/categories";
@@ -70,15 +71,20 @@ const renderBooks = async (myUrl) => {
   const authors = await getAuthors();
   const categorys = await getCategorys();
   myUrl.forEach((oneBook) => {
-    // console.log(`location.pathname/${oneBook.id}`);
-    // if (`location.pathname/${oneBook.id}`) {
-    // }
     const book = document.createElement("div");
     book.classList.add("section_for_one_book");
     book.innerHTML = templateBook;
 
     const bookImg = book.querySelector(".img_item");
     const bookName = book.querySelector(".name_item");
+    bookName.addEventListener("click", (e) => {
+      e.preventDefault();
+      const href = e.target.getAttribute("href");
+      history.pushState(null, "", href);
+      const currentBook = oneBook;
+      single(currentBook);
+    });
+
     const bookAuthor = book.querySelector(".author_item");
     const bookCategory = book.querySelector(".category_item");
     const bookPages = book.querySelector(".pages_item");
@@ -95,15 +101,8 @@ const renderBooks = async (myUrl) => {
     bookImg.setAttribute("src", oneBook.imgData);
     bookName.innerHTML = `<b>Название: </b> ${oneBook.nameData}`;
 
-    bookName.forEach((link) => {
-      link.addEventListener("click", (e) => {
-        bookName.setAttribute("href", `/${categoryName}/${oneBook.id}`);
-        e.preventDefault();
-        // const href = e.target.getAttribute("href");
-        // history.pushState(null, "", href);
-        // getBooks(href);
-      });
-    });
+    bookName.setAttribute("href", `/${categoryName}/${oneBook.id}`);
+
     bookAuthor.innerHTML = `<b>Автор: </b>${
       authors.find((author) => author.id === oneBook.authorData).nameAuthor
     }`;
@@ -387,3 +386,41 @@ const getBooks = (path) => {
       }
     });
 };
+
+async function single(oneBook) {
+  const authors = await getAuthors();
+  const categorys = await getCategorys();
+  sectionForBooks.innerHTML = "";
+  const book = document.createElement("div");
+  book.classList.add("section_for_one_book");
+  book.innerHTML = templateSingleBook;
+
+  const bookImg = book.querySelector(".img_item");
+  const bookName = book.querySelector(".name_item");
+  const bookAuthor = book.querySelector(".author_item");
+  const bookCategory = book.querySelector(".category_item");
+  const bookPages = book.querySelector(".pages_item");
+  const bookSize = book.querySelector(".size_item");
+  const bookQuality = book.querySelector(".quality_item");
+  const bookLanguage = book.querySelector(".language_item");
+  const bookYear = book.querySelector(".year_item");
+  const bookDescription = book.querySelector(".description_item");
+
+  bookImg.setAttribute("src", oneBook.imgData);
+  bookName.innerHTML = `<b>Название: </b> ${oneBook.nameData}`;
+  bookAuthor.innerHTML = `<b>Автор: </b>${
+    authors.find((author) => author.id === oneBook.authorData).nameAuthor
+  }`;
+  bookCategory.innerHTML = `<b>Категрия: </b>${
+    categorys.find((category) => category.id === oneBook.categoryData)
+      .nameCategory
+  }`;
+  bookPages.innerHTML = `<b>Количество страниц: </b>${oneBook.pagesData}`;
+  bookSize.innerHTML = `<b>Размер: </b>${oneBook.sizeData}`;
+  bookQuality.innerHTML = `<b>Качество: </b>${oneBook.qualityData}`;
+  bookLanguage.innerHTML = `<b>Язык: </b>${oneBook.languageData}`;
+  bookYear.innerHTML = `<b>Год: </b>${oneBook.yearData}`;
+  bookDescription.innerHTML = `<b>Описание: </b>${oneBook.descriptionData}`;
+
+  sectionForBooks.appendChild(book);
+}

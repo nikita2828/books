@@ -1,14 +1,10 @@
-export const templateBook = `
-<div class="change_delete">
-  <button class="section_btn change">Изменить</button>
-  <button class="section_btn delete">Удалить</button>
-</div>
+export const templateSingleBook = `
 <img
   class="section_img img_item"
   src=""
   width="200px"
 />
-<a href="" class="section_item name_item link_name"></a>
+<p href="" class="section_item name_item link_name"></p>
 <p class="section_item author_item"></p>
 <p class="section_item category_item"></p>
 <p class="section_item pages_item"></p>
@@ -16,5 +12,4 @@ export const templateBook = `
 <p class="section_item quality_item"></p>
 <p class="section_item language_item"></p>
 <p class="section_item year_item"></p>
-<p class="section_item description_item"></p>
-<hr class="section_line" />`;
+<p class="section_item description_item"></p>`;
