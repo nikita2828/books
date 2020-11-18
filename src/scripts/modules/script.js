@@ -38,8 +38,13 @@ let book = null;
 
 const store = {
   books: [],
+  author: [],
+  category: [],
 };
 
+const fetchGetBooks = () => {
+  fetch(myUrlBooks).then((response) => response.json());
+};
 addBookBtn.addEventListener("click", () => {
   modalWindowBackground.style.display = "block";
   modalWindow.style.display = "block";
@@ -72,8 +77,8 @@ cancelBtn.addEventListener("click", closeModal);
 
 //RENDER BOOKS
 const renderBooks = async (myUrl) => {
-  const authors = await getAuthors();
-  const categorys = await getCategorys();
+  const authors = store.author;
+  const categorys = store.category;
   myUrl.forEach((oneBook) => {
     const book = document.createElement("div");
     book.classList.add("section_for_one_book");
@@ -168,7 +173,6 @@ const createBook = () => {
     },
   })
     .then(closeModal)
-    .then(console.log("--------createBook"))
     .then(render(location.pathname));
 };
 
@@ -348,6 +352,12 @@ renderAuthors();
 
 document.addEventListener("DOMContentLoaded", async () => {
   store.books = await fetch(myUrlBooks).then((response) => response.json());
+  store.author = await fetch(myUrlAuthors).then((response) => response.json());
+  store.category = await fetch(myUrlCategory).then((response) =>
+    response.json()
+  );
+  console.log(store.books);
+
   render(location.pathname);
 
   const link = document.querySelectorAll(".link");
@@ -368,22 +378,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 const render = (path) => {
   const arrPath = path.split("/");
   sectionForBooks.innerHTML = "";
-  const { books } = store;
+  const storeBooks = store.books;
   if (path === routes.comp) {
-    const booksComp = books.filter((book) => book.categoryData === 1);
+    const booksComp = storeBooks.filter((book) => book.categoryData === 1);
     renderBooks(booksComp);
   } else if (path === routes.science) {
-    const booksScience = books.filter((book) => book.categoryData === 2);
+    const booksScience = storeBooks.filter((book) => book.categoryData === 2);
     renderBooks(booksScience);
   } else if (path === routes.home) {
-    const allBooks = books;
+    const allBooks = storeBooks;
     renderBooks(allBooks);
   } else if (
     (`/${arrPath[1]}` === routes.comp || `/${arrPath[1]}` === routes.science) &&
     arrPath.length === 3
   ) {
     const id = arrPath[2];
-    const singleBook = books.find((book) => book.id === +id);
+    const singleBook = storeBooks.find((book) => book.id === +id);
     single(singleBook);
   } else {
     let h1 = document.createElement("h1");
@@ -394,8 +404,8 @@ const render = (path) => {
 };
 
 async function single(oneBook) {
-  const authors = await getAuthors();
-  const categorys = await getCategorys();
+  const authors = store.author;
+  const categorys = store.category;
   sectionForBooks.innerHTML = "";
   const book = document.createElement("div");
   book.classList.add("section_for_one_book");
