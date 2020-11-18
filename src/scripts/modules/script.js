@@ -36,6 +36,10 @@ const listForPostRequest = [
 
 let book = null;
 
+const store = {
+  books: [],
+};
+
 addBookBtn.addEventListener("click", () => {
   modalWindowBackground.style.display = "block";
   modalWindow.style.display = "block";
@@ -81,8 +85,7 @@ const renderBooks = async (myUrl) => {
       e.preventDefault();
       const href = e.target.getAttribute("href");
       history.pushState(null, "", href);
-      const currentBook = oneBook;
-      single(currentBook);
+      render(href);
     });
 
     const bookAuthor = book.querySelector(".author_item");
@@ -140,7 +143,6 @@ const renderBooks = async (myUrl) => {
     deleteBtn.addEventListener("click", () => deleteBook(oneBook.id));
 
     sectionForBooks.appendChild(book);
-    console.log("---------------getRequest end");
   });
 };
 
@@ -167,14 +169,14 @@ const createBook = () => {
   })
     .then(closeModal)
     .then(console.log("--------createBook"))
-    .then(getBooks(location.pathname));
+    .then(render(location.pathname));
 };
 
 //DELETE REQUEST
 const deleteBook = (id) => {
   fetch(`${myUrlBooks}/${id}`, {
     method: "DELETE",
-  }).then(getBooks(location.pathname));
+  }).then(render(location.pathname));
 };
 
 //CHANGE REQUEST
@@ -218,8 +220,7 @@ const putRequest = () => {
     },
   })
     .then(closeModal)
-    .then(console.log("--------------------put"))
-    .then(getBooks(location.pathname));
+    .then(render(location.pathname));
 };
 editBtn.addEventListener("click", putRequest);
 
@@ -345,8 +346,9 @@ renderAuthors();
 
 //HISTORY API
 
-document.addEventListener("DOMContentLoaded", () => {
-  getBooks(location.pathname);
+document.addEventListener("DOMContentLoaded", async () => {
+  store.books = await fetch(myUrlBooks).then((response) => response.json());
+  render(location.pathname);
 
   const link = document.querySelectorAll(".link");
   link.forEach((link) => {
@@ -354,37 +356,41 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       const href = e.target.getAttribute("href");
       history.pushState(null, "", href);
-      getBooks(href);
+      render(href);
     });
   });
 
   window.addEventListener("popstate", () => {
-    getBooks(location.pathname);
+    render(location.pathname);
   });
 });
 
-const getBooks = (path) => {
-  console.log("-----------getBooks");
+const render = (path) => {
+  const arrPath = path.split("/");
   sectionForBooks.innerHTML = "";
-  fetch(myUrlBooks)
-    .then((response) => response.json())
-    .then((books) => {
-      if (path === routes.comp) {
-        const booksComp = books.filter((book) => book.categoryData === 1);
-        renderBooks(booksComp);
-      } else if (path === routes.science) {
-        const booksScience = books.filter((book) => book.categoryData === 2);
-        renderBooks(booksScience);
-      } else if (path === routes.home) {
-        const allBooks = books;
-        renderBooks(allBooks);
-      } else {
-        let h1 = document.createElement("h1");
-        h1.innerText = "PAGE NOT FOUND 404";
-        sectionForBooks.appendChild(h1);
-        h1.style.color = "black";
-      }
-    });
+  const { books } = store;
+  if (path === routes.comp) {
+    const booksComp = books.filter((book) => book.categoryData === 1);
+    renderBooks(booksComp);
+  } else if (path === routes.science) {
+    const booksScience = books.filter((book) => book.categoryData === 2);
+    renderBooks(booksScience);
+  } else if (path === routes.home) {
+    const allBooks = books;
+    renderBooks(allBooks);
+  } else if (
+    (`/${arrPath[1]}` === routes.comp || `/${arrPath[1]}` === routes.science) &&
+    arrPath.length === 3
+  ) {
+    const id = arrPath[2];
+    const singleBook = books.find((book) => book.id === +id);
+    single(singleBook);
+  } else {
+    let h1 = document.createElement("h1");
+    h1.innerText = "PAGE NOT FOUND 404";
+    sectionForBooks.appendChild(h1);
+    h1.style.color = "black";
+  }
 };
 
 async function single(oneBook) {
