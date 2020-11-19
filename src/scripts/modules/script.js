@@ -41,9 +41,9 @@ const store = {
   author: [],
   category: [],
 };
-
-const fetchGetBooks = () => {
-  fetch(myUrlBooks).then((response) => response.json());
+const fetchGetBooks = async () => {
+  store.books = await fetch(myUrlBooks).then((response) => response.json());
+  console.log(store.books);
 };
 addBookBtn.addEventListener("click", () => {
   modalWindowBackground.style.display = "block";
@@ -152,7 +152,7 @@ const renderBooks = async (myUrl) => {
 };
 
 //POST REQUEST
-const createBook = () => {
+const createBook = async () => {
   const bookData = {
     imgData: modalWindowImg.value,
     nameData: modalWindowName.value,
@@ -165,22 +165,25 @@ const createBook = () => {
     yearData: +modalWindowYear.value,
     descriptionData: modalWindowDescription.value,
   };
-  fetch(myUrlBooks, {
+  await fetch(myUrlBooks, {
     method: "POST",
     body: JSON.stringify(bookData),
     headers: {
       "Content-Type": "application/json",
     },
-  })
-    .then(closeModal)
-    .then(render(location.pathname));
+  });
+  await fetchGetBooks();
+  closeModal();
+  render(location.pathname);
 };
 
 //DELETE REQUEST
-const deleteBook = (id) => {
-  fetch(`${myUrlBooks}/${id}`, {
+const deleteBook = async (id) => {
+  await fetch(`${myUrlBooks}/${id}`, {
     method: "DELETE",
-  }).then(render(location.pathname));
+  });
+  await fetchGetBooks();
+  render(location.pathname);
 };
 
 //CHANGE REQUEST
@@ -202,7 +205,7 @@ const changeBook = (oneBook) => {
   modalWindowImg.value = oneBook.imgData;
   modalWindowDescription.value = oneBook.descriptionData;
 };
-const putRequest = () => {
+const putRequest = async () => {
   let id = book.id;
   const bookData = {
     imgData: modalWindowImg.value,
@@ -216,15 +219,16 @@ const putRequest = () => {
     yearData: +modalWindowYear.value,
     descriptionData: modalWindowDescription.value,
   };
-  fetch(`${myUrlBooks}/${id}`, {
+  await fetch(`${myUrlBooks}/${id}`, {
     method: "PUT",
     body: JSON.stringify(bookData),
     headers: {
       "Content-Type": "application/json",
     },
-  })
-    .then(closeModal)
-    .then(render(location.pathname));
+  });
+  await fetchGetBooks();
+  closeModal();
+  render(location.pathname);
 };
 editBtn.addEventListener("click", putRequest);
 
@@ -242,7 +246,6 @@ createBtn.addEventListener("click", () => {
   });
   const isEmpty = listForPostRequest.every((input) => input.value);
   if (modalWindowDescription.value.length >= 10 && isEmpty) {
-    console.log("-----validation");
     createBook();
   }
   if (modalWindowDescription.value.length < 10) {
@@ -356,8 +359,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   store.category = await fetch(myUrlCategory).then((response) =>
     response.json()
   );
-  console.log(store.books);
-
   render(location.pathname);
 
   const link = document.querySelectorAll(".link");
@@ -379,6 +380,7 @@ const render = (path) => {
   const arrPath = path.split("/");
   sectionForBooks.innerHTML = "";
   const storeBooks = store.books;
+  console.log(storeBooks);
   if (path === routes.comp) {
     const booksComp = storeBooks.filter((book) => book.categoryData === 1);
     renderBooks(booksComp);
